@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <circle cx="60" cy="55" r="38" fill="none" stroke="#e65100" stroke-width="4"/>
+  <line x1="60" y1="55" x2="60" y2="30" stroke="#e65100" stroke-width="4" stroke-linecap="round"/>
+  <line x1="60" y1="55" x2="78" y2="62" stroke="#e65100" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="60" cy="55" r="4" fill="#e65100"/>
+  <path d="M88,25 Q100,40 95,55" fill="none" stroke="#e65100" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="97,50 100,60 90,57" fill="#e65100"/>
+  <text x="60" y="108" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="#e65100">POLLING</text>
+</svg>

@@ -1,0 +1,78 @@
+<div class="sdx-detail-panel">
+  <!-- Detail panel tabs -->
+  <div class="detail-tabs">
+    <span class="detail-tab" [class.active]="activeTab === 'details'" (click)="activeTab = 'details'">DETAILS</span>
+    <span class="detail-tab" [class.active]="activeTab === 'structure'" (click)="activeTab = 'structure'">STRUCTURE</span>
+    <span class="detail-tab" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'">HISTORY</span>
+  </div>
+
+  <!-- Details Tab (SDx style form layout) -->
+  <div class="detail-body" *ngIf="activeTab === 'details'" #termBody>
+    <div class="detail-section">
+      <div class="detail-section-title">Distribution</div>
+      <div class="form-grid">
+        <div class="form-row">
+          <label class="form-label">From organisation:</label>
+          <span class="form-value">WOR</span>
+          <label class="form-label">From role:</label>
+          <span class="form-value">Contractor Document Contr...</span>
+          <label class="form-label">From user:</label>
+          <span class="form-value">Dathrik, Bhushan</span>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Contract:</label>
+          <span class="form-value">C2 EPC - BOP</span>
+          <label class="form-label">To role:</label>
+          <span class="form-value">Document Control</span>
+          <label class="form-label">To user:</label>
+          <span class="form-value">-</span>
+        </div>
+        <div class="form-row">
+          <label class="form-label">To organisation:</label>
+          <span class="form-value">VGL</span>
+          <label class="form-label">Discipline:</label>
+          <span class="form-value">All</span>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Submittal Type:</label>
+          <span class="form-value">Technical</span>
+          <label class="form-label">Reason For Issue:</label>
+          <span class="form-value">Information</span>
+          <label class="form-label">Issue state:</label>
+          <span class="form-value highlight">SUBMITTED</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">Pipeline Status
+        <span class="status-indicator" [class.active]="isRunning">
+          {{ isRunning ? 'RUNNING' : 'IDLE' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Structure Tab (Pipeline log) -->
+  <div class="detail-body log-view" *ngIf="activeTab === 'structure'" #termBody>
+    <div class="log-line" *ngFor="let log of logs">
+      <span class="log-time">{{ log.timestamp }}</span>
+      <span class="log-tag" [ngClass]="log.level">{{ log.tag }}</span>
+      <span class="log-msg">{{ log.message }}</span>
+    </div>
+    <div class="log-cursor" *ngIf="isRunning">
+      <span class="cursor-blink">|</span>
+    </div>
+  </div>
+
+  <!-- History Tab -->
+  <div class="detail-body" *ngIf="activeTab === 'history'" #termBody>
+    <div class="history-empty" *ngIf="logs.length === 0">No workflow history available</div>
+    <div class="history-list" *ngIf="logs.length > 0">
+      <div class="history-item" *ngFor="let log of logs; let i = index" [ngClass]="log.level">
+        <span class="history-time">{{ log.timestamp }}</span>
+        <span class="history-action">{{ log.message }}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HxGN SDx Bot Execution Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; padding: 32px; color: #333; }
+    .report { max-width: 1060px; margin: 0 auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+    .header { background: #003b5c; color: #fff; padding: 24px 32px; }
+    .header h1 { font-size: 22px; margin-bottom: 4px; }
+    .header .sub { font-size: 14px; opacity: 0.8; }
+    .meta { padding: 20px 32px; background: #f0f4f8; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 14px; }
+    .meta .label { font-weight: 600; color: #666; }
+    .content { padding: 24px 32px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th { background: #003b5c; color: #fff; padding: 8px 12px; text-align: left; font-size: 12px; text-transform: uppercase; }
+    td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; font-size: 13px; }
+    tr:hover { background: #f9f9f9; }
+    .pass { color: #2e7d32; font-weight: 700; }
+    .fail { color: #c62828; font-weight: 700; }
+    .section-title { font-size: 18px; color: #003b5c; margin: 28px 0 8px; padding-top: 16px; border-top: 2px solid #e0e0e0; }
+    .section-title:first-child { border-top: none; margin-top: 0; }
+    .footer { padding: 20px 32px; background: #f0f4f8; border-top: 2px solid #003b5c; font-size: 14px; }
+    .footer .final-status { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .footer .final-status.ok { color: #2e7d32; }
+    .footer .final-status.err { color: #c62828; }
+    a { color: #00a3e0; }
+    .doc-detail { page-break-inside: avoid; }
+    .check-section { margin: 10px 0; border: 1px solid #e0e0e0; border-radius: 4px; }
+    .check-section summary { cursor: pointer; padding: 8px 12px; font-size: 13px; font-weight: 600; color: #003b5c; background: #f0f4f8; user-select: none; }
+    .check-section summary:hover { background: #e4ecf2; }
+    .check-section[open] summary { border-bottom: 1px solid #e0e0e0; }
+    .check-section table { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div class="report">
+    <div class="header">
+      <h1>HxGN SDx Bot Execution Report</h1>
+      <div class="sub">Venture Global CP2 LNG — Document Control Automation</div>
+    </div>
+    <div class="meta">
+      <div><span class="label">Run Date & Time:</span> 10/4/2026, 4:42:43 pm</div>
+      <div><span class="label">Duration:</span> 24.4s</div>
+      <div><span class="label">Bot User:</span> dc_bot</div>
+      <div><span class="label">Documents Processed:</span> 5 (2 passed, 3 failed)</div>
+    </div>
+    <div class="content">
+      <h2 class="section-title" style="border-top:none;margin-top:0;">Document Summary</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Document Number</th><th>File Name</th><th>Outcome</th><th>Checks</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>1</td>
+          <td>VG-CP2-MEC-DWG-0001</td>
+          <td>VG-CP2-MEC-DWG-0001_RevA.pdf</td>
+          <td class="pass">PASS</td>
+          <td>20 pass / 0 fail</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>VG-CP2-ELE-SPC-0042</td>
+          <td>VG-CP2-ELE-SPC-0042_RevB.pdf</td>
+          <td class="pass">PASS</td>
+          <td>20 pass / 0 fail</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>VG-CP2-PIP-DWG-0112</td>
+          <td>VG-CP2-PIP-DWG-0112_RevA.pdf</td>
+          <td class="fail">FAIL</td>
+          <td>5 pass / 19 fail</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>VG-CP2-CIV-CAL-0037</td>
+          <td>VG-CP2-CIV-CAL-0037_RevA.pdf</td>
+          <td class="fail">FAIL</td>
+          <td>19 pass / 1 fail</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>VG-CP2-PRO-PID-0044</td>
+          <td>VG-CP2-PRO-PID-0044_Rev0.pdf</td>
+          <td class="fail">FAIL</td>
+          <td>8 pass / 13 fail</td>
+        </tr></tbody>
+      </table>
+
+      <h2 class="section-title">Document Quality &amp; Cross-Validation Checks</h2>
+      
+          <div class="doc-detail" style="margin-top:24px;">
+            <h3 style="font-size:16px;color:#003b5c;margin-bottom:4px;">
+              1. VG-CP2-MEC-DWG-0001
+              <span style="font-size:13px;font-weight:400;color:#666;margin-left:8px;">VG-CP2-MEC-DWG-0001_RevA.pdf</span>
+              <span class="pass" style="margin-left:12px;font-size:13px;">PASS</span>
+            </h3>
+            <details class="check-section">
+              <summary>Document Quality Checks</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>OCR / Text Searchability</td>
+              <td class="pass">PASS</td>
+              <td>Readable text extracted — 233 words, 1669 chars</td>
+            </tr>
+            <tr>
+              <td>No Draft Watermarks</td>
+              <td class="pass">PASS</td>
+              <td>No draft indicators found</td>
+            </tr>
+            <tr>
+              <td>No Markups or Annotations</td>
+              <td class="pass">PASS</td>
+              <td>No markup artifacts found</td>
+            </tr>
+            <tr>
+              <td>Page Orientation</td>
+              <td class="pass">PASS</td>
+              <td>No orientation anomalies detected</td>
+            </tr>
+            <tr>
+              <td>Document Metadata on Each Page</td>
+              <td class="pass">PASS</td>
+              <td>Document identity and security class present throughout</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="pass">PASS</td>
+              <td>Valid security classification found</td>
+            </tr>
+            <tr>
+              <td>Revision History Complete</td>
+              <td class="pass">PASS</td>
+              <td>Revision history section present</td>
+            </tr>
+            <tr>
+              <td>Document Structure</td>
+              <td class="pass">PASS</td>
+              <td>Sections: Yes | Signatures: Yes | Rev History: Yes</td>
+            </tr>
+            <tr>
+              <td>Correct Contract Reference</td>
+              <td class="pass">PASS</td>
+              <td>C2 EPC-BOP contract reference confirmed</td>
+            </tr>
+            <tr>
+              <td>Revision & Issue Purpose Alignment</td>
+              <td class="pass">PASS</td>
+              <td>Revision and issue purpose are aligned</td>
+            </tr>
+            <tr>
+              <td>File Completeness</td>
+              <td class="pass">PASS</td>
+              <td>Clean end-of-document marker found</td>
+            </tr>
+            <tr>
+              <td>Second Cover Page</td>
+              <td class="pass">PASS</td>
+              <td>Document Control Information block present</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Loadsheet vs Document</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>Document Number Match</td>
+              <td class="pass">PASS</td>
+              <td>Document number matches loadsheet: VG-CP2-MEC-DWG-0001</td>
+            </tr>
+            <tr>
+              <td>Document Title Match</td>
+              <td class="pass">PASS</td>
+              <td>Document title matches loadsheet entry</td>
+            </tr>
+            <tr>
+              <td>Revision Match</td>
+              <td class="pass">PASS</td>
+              <td>Revision matches: Rev A</td>
+            </tr>
+            <tr>
+              <td>Discipline Match</td>
+              <td class="pass">PASS</td>
+              <td>Discipline matches: MEC</td>
+            </tr>
+            <tr>
+              <td>File Type Match</td>
+              <td class="pass">PASS</td>
+              <td>File type matches: PDF</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="pass">PASS</td>
+              <td>Security classification found in document: Company</td>
+            </tr>
+            <tr>
+              <td>Issue Purpose Present</td>
+              <td class="pass">PASS</td>
+              <td>Issue purpose found in document: IFR</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Transmittal Readiness</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>Transmittal Field Readiness</td>
+              <td class="pass">PASS</td>
+              <td>All required transmittal fields can be extracted from document</td>
+            </tr></tbody>
+              </table>
+            </details></div>
+          <div class="doc-detail" style="margin-top:24px;">
+            <h3 style="font-size:16px;color:#003b5c;margin-bottom:4px;">
+              2. VG-CP2-ELE-SPC-0042
+              <span style="font-size:13px;font-weight:400;color:#666;margin-left:8px;">VG-CP2-ELE-SPC-0042_RevB.pdf</span>
+              <span class="pass" style="margin-left:12px;font-size:13px;">PASS</span>
+            </h3>
+            <details class="check-section">
+              <summary>Document Quality Checks</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>OCR / Text Searchability</td>
+              <td class="pass">PASS</td>
+              <td>Readable text extracted — 204 words, 1404 chars</td>
+            </tr>
+            <tr>
+              <td>No Draft Watermarks</td>
+              <td class="pass">PASS</td>
+              <td>No draft indicators found</td>
+            </tr>
+            <tr>
+              <td>No Markups or Annotations</td>
+              <td class="pass">PASS</td>
+              <td>No markup artifacts found</td>
+            </tr>
+            <tr>
+              <td>Page Orientation</td>
+              <td class="pass">PASS</td>
+              <td>No orientation anomalies detected</td>
+            </tr>
+            <tr>
+              <td>Document Metadata on Each Page</td>
+              <td class="pass">PASS</td>
+              <td>Document identity and security class present throughout</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="pass">PASS</td>
+              <td>Valid security classification found</td>
+            </tr>
+            <tr>
+              <td>Revision History Complete</td>
+              <td class="pass">PASS</td>
+              <td>Revision history section present</td>
+            </tr>
+            <tr>
+              <td>Document Structure</td>
+              <td class="pass">PASS</td>
+              <td>Sections: Yes | Signatures: Yes | Rev History: Yes</td>
+            </tr>
+            <tr>
+              <td>Correct Contract Reference</td>
+              <td class="pass">PASS</td>
+              <td>C2 EPC-BOP contract reference confirmed</td>
+            </tr>
+            <tr>
+              <td>Revision & Issue Purpose Alignment</td>
+              <td class="pass">PASS</td>
+              <td>Revision and issue purpose are aligned</td>
+            </tr>
+            <tr>
+              <td>File Completeness</td>
+              <td class="pass">PASS</td>
+              <td>Clean end-of-document marker found</td>
+            </tr>
+            <tr>
+              <td>Second Cover Page</td>
+              <td class="pass">PASS</td>
+              <td>Document Control Information block present</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Loadsheet vs Document</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>Document Number Match</td>
+              <td class="pass">PASS</td>
+              <td>Document number matches loadsheet: VG-CP2-ELE-SPC-0042</td>
+            </tr>
+            <tr>
+              <td>Document Title Match</td>
+              <td class="pass">PASS</td>
+              <td>Document title matches loadsheet entry</td>
+            </tr>
+            <tr>
+              <td>Revision Match</td>
+              <td class="pass">PASS</td>
+              <td>Revision matches: Rev B</td>
+            </tr>
+            <tr>
+              <td>Discipline Match</td>
+              <td class="pass">PASS</td>
+              <td>Discipline matches: ELE</td>
+            </tr>
+            <tr>
+              <td>File Type Match</td>
+              <td class="pass">PASS</td>
+              <td>File type matches: PDF</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="pass">PASS</td>
+              <td>Security classification found in document: Company</td>
+            </tr>
+            <tr>
+              <td>Issue Purpose Present</td>
+              <td class="pass">PASS</td>
+              <td>Issue purpose found in document: IFC</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Transmittal Readiness</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>Transmittal Field Readiness</td>
+              <td class="pass">PASS</td>
+              <td>All required transmittal fields can be extracted from document</td>
+            </tr></tbody>
+              </table>
+            </details></div>
+          <div class="doc-detail" style="margin-top:24px;">
+            <h3 style="font-size:16px;color:#003b5c;margin-bottom:4px;">
+              3. VG-CP2-PIP-DWG-0112
+              <span style="font-size:13px;font-weight:400;color:#666;margin-left:8px;">VG-CP2-PIP-DWG-0112_RevA.pdf</span>
+              <span class="fail" style="margin-left:12px;font-size:13px;">FAIL</span>
+            </h3>
+            <details class="check-section">
+              <summary>Document Quality Checks</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>OCR / Text Searchability</td>
+              <td class="fail">FAIL</td>
+              <td>No text content — image-only or scanned document. OCR data found but text is not searchable</td>
+            </tr>
+            <tr>
+              <td>No Draft Watermarks</td>
+              <td class="pass">PASS</td>
+              <td>No draft indicators found</td>
+            </tr>
+            <tr>
+              <td>No Markups or Annotations</td>
+              <td class="pass">PASS</td>
+              <td>No markup artifacts found</td>
+            </tr>
+            <tr>
+              <td>Page Orientation</td>
+              <td class="pass">PASS</td>
+              <td>No orientation anomalies detected</td>
+            </tr>
+            <tr>
+              <td>Document Metadata on Each Page</td>
+              <td class="fail">FAIL</td>
+              <td>Metadata may not appear on all pages</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="fail">FAIL</td>
+              <td>Security classification missing or invalid</td>
+            </tr>
+            <tr>
+              <td>Revision History Complete</td>
+              <td class="fail">FAIL</td>
+              <td>Revision history missing</td>
+            </tr>
+            <tr>
+              <td>Document Structure</td>
+              <td class="fail">FAIL</td>
+              <td>Sections: No | Signatures: No | Rev History: No</td>
+            </tr>
+            <tr>
+              <td>Correct Contract Reference</td>
+              <td class="fail">FAIL</td>
+              <td>No contract reference found</td>
+            </tr>
+            <tr>
+              <td>Revision & Issue Purpose Alignment</td>
+              <td class="pass">PASS</td>
+              <td>Revision and issue purpose are aligned</td>
+            </tr>
+            <tr>
+              <td>File Completeness</td>
+              <td class="fail">FAIL</td>
+              <td>No end marker — file may be truncated</td>
+            </tr>
+            <tr>
+              <td>Second Cover Page</td>
+              <td class="fail">FAIL</td>
+              <td>Second cover page not detected</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Loadsheet vs Document</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>File Type Match</td>
+              <td class="pass">PASS</td>
+              <td>File type matches: PDF</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="fail">FAIL</td>
+              <td>Security classification not found in document — required field</td>
+            </tr>
+            <tr>
+              <td>Issue Purpose Present</td>
+              <td class="fail">FAIL</td>
+              <td>Issue purpose not found in document — required field</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Transmittal Readiness</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>Transmittal Field Readiness</td>
+              <td class="fail">FAIL</td>
+              <td>Missing fields for transmittal: contractNumber, title, revision, issuePurpose, securityClassification, documentType, discipline, fromOrganisation</td>
+            </tr>
+            <tr>
+              <td>Missing: contractNumber</td>
+              <td class="fail">FAIL</td>
+              <td>"contractNumber" could not be extracted from document — transmittal will be incomplete</td>
+            </tr>
+            <tr>
+              <td>Missing: title</td>
+              <td class="fail">FAIL</td>
+              <td>"title" could not be extracted from document — transmittal will be incomplete</td>
+            </tr>
+            <tr>
+              <td>Missing: revision</td>
+              <td class="fail">FAIL</td>
+              <td>"revision" could not be extracted from document — transmittal will be incomplete</td>
+            </tr>
+            <tr>
+              <td>Missing: issuePurpose</td>
+              <td class="fail">FAIL</td>
+              <td>"issuePurpose" could not be extracted from document — transmittal will be incomplete</td>
+            </tr>
+            <tr>
+              <td>Missing: securityClassification</td>
+              <td class="fail">FAIL</td>
+              <td>"securityClassification" could not be extracted from document — transmittal will be incomplete</td>
+            </tr>
+            <tr>
+              <td>Missing: documentType</td>
+              <td class="fail">FAIL</td>
+              <td>"documentType" could not be extracted from document — transmittal will be incomplete</td>
+            </tr>
+            <tr>
+              <td>Missing: discipline</td>
+              <td class="fail">FAIL</td>
+              <td>"discipline" could not be extracted from document — transmittal will be incomplete</td>
+            </tr>
+            <tr>
+              <td>Missing: fromOrganisation</td>
+              <td class="fail">FAIL</td>
+              <td>"fromOrganisation" could not be extracted from document — transmittal will be incomplete</td>
+            </tr></tbody>
+              </table>
+            </details></div>
+          <div class="doc-detail" style="margin-top:24px;">
+            <h3 style="font-size:16px;color:#003b5c;margin-bottom:4px;">
+              4. VG-CP2-CIV-CAL-0037
+              <span style="font-size:13px;font-weight:400;color:#666;margin-left:8px;">VG-CP2-CIV-CAL-0037_RevA.pdf</span>
+              <span class="fail" style="margin-left:12px;font-size:13px;">FAIL</span>
+            </h3>
+            <details class="check-section">
+              <summary>Document Quality Checks</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>OCR / Text Searchability</td>
+              <td class="pass">PASS</td>
+              <td>Readable text extracted — 223 words, 1537 chars</td>
+            </tr>
+            <tr>
+              <td>No Draft Watermarks</td>
+              <td class="pass">PASS</td>
+              <td>No draft indicators found</td>
+            </tr>
+            <tr>
+              <td>No Markups or Annotations</td>
+              <td class="fail">FAIL</td>
+              <td>Annotation or markup indicators detected in document</td>
+            </tr>
+            <tr>
+              <td>Page Orientation</td>
+              <td class="pass">PASS</td>
+              <td>No orientation anomalies detected</td>
+            </tr>
+            <tr>
+              <td>Document Metadata on Each Page</td>
+              <td class="pass">PASS</td>
+              <td>Document identity and security class present throughout</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="pass">PASS</td>
+              <td>Valid security classification found</td>
+            </tr>
+            <tr>
+              <td>Revision History Complete</td>
+              <td class="pass">PASS</td>
+              <td>Revision history section present</td>
+            </tr>
+            <tr>
+              <td>Document Structure</td>
+              <td class="pass">PASS</td>
+              <td>Sections: Yes | Signatures: Yes | Rev History: Yes</td>
+            </tr>
+            <tr>
+              <td>Correct Contract Reference</td>
+              <td class="pass">PASS</td>
+              <td>C2 EPC-BOP contract reference confirmed</td>
+            </tr>
+            <tr>
+              <td>Revision & Issue Purpose Alignment</td>
+              <td class="pass">PASS</td>
+              <td>Revision and issue purpose are aligned</td>
+            </tr>
+            <tr>
+              <td>File Completeness</td>
+              <td class="pass">PASS</td>
+              <td>Clean end-of-document marker found</td>
+            </tr>
+            <tr>
+              <td>Second Cover Page</td>
+              <td class="pass">PASS</td>
+              <td>Document Control Information block present</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Loadsheet vs Document</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>Document Number Match</td>
+              <td class="pass">PASS</td>
+              <td>Document number matches loadsheet: VG-CP2-CIV-CAL-0037</td>
+            </tr>
+            <tr>
+              <td>Document Title Match</td>
+              <td class="pass">PASS</td>
+              <td>Document title matches loadsheet entry</td>
+            </tr>
+            <tr>
+              <td>Revision Match</td>
+              <td class="pass">PASS</td>
+              <td>Revision matches: Rev A</td>
+            </tr>
+            <tr>
+              <td>Discipline Match</td>
+              <td class="pass">PASS</td>
+              <td>Discipline matches: CIV</td>
+            </tr>
+            <tr>
+              <td>File Type Match</td>
+              <td class="pass">PASS</td>
+              <td>File type matches: PDF</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="pass">PASS</td>
+              <td>Security classification found in document: Company</td>
+            </tr>
+            <tr>
+              <td>Issue Purpose Present</td>
+              <td class="pass">PASS</td>
+              <td>Issue purpose found in document: IFR</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Transmittal Readiness</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>Transmittal Field Readiness</td>
+              <td class="pass">PASS</td>
+              <td>All required transmittal fields can be extracted from document</td>
+            </tr></tbody>
+              </table>
+            </details></div>
+          <div class="doc-detail" style="margin-top:24px;">
+            <h3 style="font-size:16px;color:#003b5c;margin-bottom:4px;">
+              5. VG-CP2-PRO-PID-0044
+              <span style="font-size:13px;font-weight:400;color:#666;margin-left:8px;">VG-CP2-PRO-PID-0044_Rev0.pdf</span>
+              <span class="fail" style="margin-left:12px;font-size:13px;">FAIL</span>
+            </h3>
+            <details class="check-section">
+              <summary>Document Quality Checks</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>OCR / Text Searchability</td>
+              <td class="pass">PASS</td>
+              <td>Readable text extracted — 75 words, 518 chars</td>
+            </tr>
+            <tr>
+              <td>No Draft Watermarks</td>
+              <td class="fail">FAIL</td>
+              <td>DRAFT or NOT FOR CONSTRUCTION marker detected</td>
+            </tr>
+            <tr>
+              <td>No Markups or Annotations</td>
+              <td class="pass">PASS</td>
+              <td>No markup artifacts found</td>
+            </tr>
+            <tr>
+              <td>Page Orientation</td>
+              <td class="pass">PASS</td>
+              <td>No orientation anomalies detected</td>
+            </tr>
+            <tr>
+              <td>Document Metadata on Each Page</td>
+              <td class="fail">FAIL</td>
+              <td>Metadata may not appear on all pages</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="fail">FAIL</td>
+              <td>Security classification missing or invalid</td>
+            </tr>
+            <tr>
+              <td>Revision History Complete</td>
+              <td class="fail">FAIL</td>
+              <td>Revision history missing</td>
+            </tr>
+            <tr>
+              <td>Document Structure</td>
+              <td class="fail">FAIL</td>
+              <td>Sections: No | Signatures: Yes | Rev History: No</td>
+            </tr>
+            <tr>
+              <td>Correct Contract Reference</td>
+              <td class="fail">FAIL</td>
+              <td>Document submitted under wrong contract/project</td>
+            </tr>
+            <tr>
+              <td>Revision & Issue Purpose Alignment</td>
+              <td class="fail">FAIL</td>
+              <td>Rev 0 cannot be AFC (Approved for Construction)</td>
+            </tr>
+            <tr>
+              <td>File Completeness</td>
+              <td class="fail">FAIL</td>
+              <td>No end marker — file may be truncated</td>
+            </tr>
+            <tr>
+              <td>Second Cover Page</td>
+              <td class="fail">FAIL</td>
+              <td>Second cover page not detected</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Loadsheet vs Document</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>Document Title Match</td>
+              <td class="pass">PASS</td>
+              <td>Document title matches loadsheet entry</td>
+            </tr>
+            <tr>
+              <td>Revision Match</td>
+              <td class="pass">PASS</td>
+              <td>Revision matches: Rev 0</td>
+            </tr>
+            <tr>
+              <td>Discipline Match</td>
+              <td class="pass">PASS</td>
+              <td>Discipline matches: PRO</td>
+            </tr>
+            <tr>
+              <td>File Type Match</td>
+              <td class="pass">PASS</td>
+              <td>File type matches: PDF</td>
+            </tr>
+            <tr>
+              <td>Security Classification Present</td>
+              <td class="fail">FAIL</td>
+              <td>Security classification not found in document — required field</td>
+            </tr>
+            <tr>
+              <td>Issue Purpose Present</td>
+              <td class="pass">PASS</td>
+              <td>Issue purpose found in document: AFC</td>
+            </tr></tbody>
+              </table>
+            </details>
+            <details class="check-section">
+              <summary>Transmittal Readiness</summary>
+              <table>
+                <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                <tbody>
+            <tr>
+              <td>Transmittal Field Readiness</td>
+              <td class="fail">FAIL</td>
+              <td>Missing fields for transmittal: contractNumber, securityClassification</td>
+            </tr>
+            <tr>
+              <td>Missing: contractNumber</td>
+              <td class="fail">FAIL</td>
+              <td>"contractNumber" could not be extracted from document — transmittal will be incomplete</td>
+            </tr>
+            <tr>
+              <td>Missing: securityClassification</td>
+              <td class="fail">FAIL</td>
+              <td>"securityClassification" could not be extracted from document — transmittal will be incomplete</td>
+            </tr></tbody>
+              </table>
+            </details></div>
+
+      
+      <h2 class="section-title">Workflow Step Log</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Step</th><th>Status</th><th>Notes</th><th>Screenshot</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>1</td>
+          <td>Login</td>
+          <td class="pass">PASS</td>
+          <td>Logged in as dc_bot</td>
+          <td><a href="../screenshots/step01-login.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Identify Document in To Do List</td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-MEC-DWG-0001] Claimed VG-CP2-MEC-DWG-0001</td>
+          <td><a href="../screenshots/doc01-claim.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Claim Submittal</td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-MEC-DWG-0001] DocNum=VG-CP2-MEC-DWG-0001, Rev=A, Type=PDF</td>
+          <td><a href="../screenshots/doc01-datasheet.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Validate Submittal Detail Screen</td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-MEC-DWG-0001] </td>
+          <td><a href="../screenshots/doc01-detail.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Open Load Datasheet</td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-MEC-DWG-0001] Document Number: PASS (VG-CP2-MEC-DWG-0001); Title: PASS (Mechanical Equipment Layout — Train 1); Revision: PASS (A); File Type: PASS (PDF); Discipline: PASS (Mechanical)</td>
+          <td><a href="../screenshots/doc01-FAIL.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Validate Datasheet Fields</td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-MEC-DWG-0001] File: VG-CP2-MEC-DWG-0001_RevA.pdf, 23 checks passed</td>
+          <td><a href="../screenshots/doc01-final.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Document Integrity Check</td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-MEC-DWG-0001] Transmittal: TR-CP2-MNST4FQ3</td>
+          <td><a href="../screenshots/doc01-integrity.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Create Incoming Transmittal</td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-MEC-DWG-0001] Revision: A</td>
+          <td><a href="../screenshots/doc01-transmittal.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>Approve Submittal</td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-MEC-DWG-0001] Stopped before Complete</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>Set Bot Reviewed Status</td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-ELE-SPC-0042] Claimed VG-CP2-ELE-SPC-0042</td>
+          <td><a href="../screenshots/doc02-claim.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-ELE-SPC-0042] DocNum=VG-CP2-ELE-SPC-0042, Rev=B, Type=PDF</td>
+          <td><a href="../screenshots/doc02-datasheet.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-ELE-SPC-0042] </td>
+          <td><a href="../screenshots/doc02-detail.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-ELE-SPC-0042] Document Number: PASS (VG-CP2-ELE-SPC-0042); Title: PASS (Electrical Single Line Diagram — Substation B); Revision: PASS (B); File Type: PASS (PDF); Discipline: PASS (Electrical)</td>
+          <td><a href="../screenshots/doc02-FAIL.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-ELE-SPC-0042] File: VG-CP2-ELE-SPC-0042_RevB.pdf, 23 checks passed</td>
+          <td><a href="../screenshots/doc02-final.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-ELE-SPC-0042] Transmittal: TR-CP2-MNST4K43</td>
+          <td><a href="../screenshots/doc02-integrity.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-ELE-SPC-0042] Revision: A</td>
+          <td><a href="../screenshots/doc02-transmittal.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-ELE-SPC-0042] Stopped before Complete</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-PIP-DWG-0112] Claimed VG-CP2-PIP-DWG-0112</td>
+          <td><a href="../screenshots/doc03-claim.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-PIP-DWG-0112] DocNum=VG-CP2-PIP-DWG-0112, Rev=A, Type=PDF</td>
+          <td><a href="../screenshots/doc03-datasheet.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-PIP-DWG-0112] </td>
+          <td><a href="../screenshots/doc03-detail.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-PIP-DWG-0112] Document Number: PASS (VG-CP2-PIP-DWG-0112); Title: PASS (Piping Isometric — Scanned Drawing Area 400); Revision: PASS (A); File Type: PASS (PDF); Discipline: PASS (Piping)</td>
+          <td><a href="../screenshots/doc03-FAIL.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td></td>
+          <td class="fail">FAIL</td>
+          <td>[VG-CP2-PIP-DWG-0112] Document checks failed: OCR / Text Searchability: FAIL (No text content — image-only or scanned document. OCR data found but text is not searchable); Document Metadata on Each Page: FAIL (Metadata may not appear on all pages); Security Classification Present: FAIL (Security classification missing or invalid); Revision History Complete: FAIL (Revision history missing); Document Structure: FAIL (Sections: No | Signatures: No | Rev History: No); Correct Contract Reference: FAIL (No contract reference found); File Completeness: FAIL (No end marker — file may be truncated); Second Cover Page: FAIL (Second cover page not detected); Security Classification Present: FAIL (Security classification not found in document — required field); Issue Purpose Present: FAIL (Issue purpose not found in document — required field); Transmittal Field Readiness: FAIL (Missing fields for transmittal: contractNumber, title, revision, issuePurpose, securityClassification, documentType, discipline, fromOrganisation); Missing: contractNumber: FAIL ("contractNumber" could not be extracted from document — transmittal will be incomplete); Missing: title: FAIL ("title" could not be extracted from document — transmittal will be incomplete); Missing: revision: FAIL ("revision" could not be extracted from document — transmittal will be incomplete); Missing: issuePurpose: FAIL ("issuePurpose" could not be extracted from document — transmittal will be incomplete); Missing: securityClassification: FAIL ("securityClassification" could not be extracted from document — transmittal will be incomplete); Missing: documentType: FAIL ("documentType" could not be extracted from document — transmittal will be incomplete); Missing: discipline: FAIL ("discipline" could not be extracted from document — transmittal will be incomplete); Missing: fromOrganisation: FAIL ("fromOrganisation" could not be extracted from document — transmittal will be incomplete)</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>23</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-CIV-CAL-0037] Claimed VG-CP2-CIV-CAL-0037</td>
+          <td><a href="../screenshots/doc04-claim.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>24</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-CIV-CAL-0037] DocNum=VG-CP2-CIV-CAL-0037, Rev=A, Type=PDF</td>
+          <td><a href="../screenshots/doc04-datasheet.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>25</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-CIV-CAL-0037] </td>
+          <td><a href="../screenshots/doc04-detail.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>26</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-CIV-CAL-0037] Document Number: PASS (VG-CP2-CIV-CAL-0037); Title: PASS (Foundation Loading Analysis — Area 300); Revision: PASS (A); File Type: PASS (PDF); Discipline: PASS (Civil)</td>
+          <td><a href="../screenshots/doc04-FAIL.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>27</td>
+          <td></td>
+          <td class="fail">FAIL</td>
+          <td>[VG-CP2-CIV-CAL-0037] Document checks failed: No Markups or Annotations: FAIL (Annotation or markup indicators detected in document)</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>28</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-PRO-PID-0044] Claimed VG-CP2-PRO-PID-0044</td>
+          <td><a href="../screenshots/doc05-claim.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>29</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-PRO-PID-0044] DocNum=VG-CP2-PRO-PID-0044, Rev=0, Type=PDF</td>
+          <td><a href="../screenshots/doc05-datasheet.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>30</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-PRO-PID-0044] </td>
+          <td><a href="../screenshots/doc05-detail.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>31</td>
+          <td></td>
+          <td class="pass">PASS</td>
+          <td>[VG-CP2-PRO-PID-0044] Document Number: PASS (VG-CP2-PRO-PID-0044); Title: PASS (P&ID — Condensate Recovery Unit); Revision: PASS (0); File Type: PASS (PDF); Discipline: PASS (Process)</td>
+          <td><a href="../screenshots/doc05-FAIL.png" target="_blank">View</a></td>
+        </tr>
+        <tr>
+          <td>32</td>
+          <td></td>
+          <td class="fail">FAIL</td>
+          <td>[VG-CP2-PRO-PID-0044] Document checks failed: No Draft Watermarks: FAIL (DRAFT or NOT FOR CONSTRUCTION marker detected); Document Metadata on Each Page: FAIL (Metadata may not appear on all pages); Security Classification Present: FAIL (Security classification missing or invalid); Revision History Complete: FAIL (Revision history missing); Document Structure: FAIL (Sections: No | Signatures: Yes | Rev History: No); Correct Contract Reference: FAIL (Document submitted under wrong contract/project); Revision & Issue Purpose Alignment: FAIL (Rev 0 cannot be AFC (Approved for Construction)); File Completeness: FAIL (No end marker — file may be truncated); Second Cover Page: FAIL (Second cover page not detected); Security Classification Present: FAIL (Security classification not found in document — required field); Transmittal Field Readiness: FAIL (Missing fields for transmittal: contractNumber, securityClassification); Missing: contractNumber: FAIL ("contractNumber" could not be extracted from document — transmittal will be incomplete); Missing: securityClassification: FAIL ("securityClassification" could not be extracted from document — transmittal will be incomplete)</td>
+          <td>—</td>
+        </tr></tbody>
+      </table>
+    </div>
+    <div class="footer">
+      <div class="final-status err">
+        Final Status: 2 Passed / 3 Failed &#10007;
+      </div>
+      <div>Next Action: Investigate failed documents and re-submit</div>
+    </div>
+  </div>
+</body>
+</html>

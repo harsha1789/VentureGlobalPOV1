@@ -1,0 +1,109 @@
+<div class="rejection-overlay" *ngIf="isOpen" (click)="close()">
+  <div class="rejection-dialog" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="rd-header">
+      <div class="rd-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="6" stroke="#dc2626" stroke-width="1.5" fill="none"/>
+          <path d="M5 5l6 6M11 5l-6 6" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Reject Document
+      </div>
+      <button class="rd-close" (click)="close()">&times;</button>
+    </div>
+
+    <!-- Document info -->
+    <div class="rd-doc-info">
+      <span class="rd-doc-field"><strong>Document:</strong> {{ documentNumber || documentName }}</span>
+      <span class="rd-doc-field"><strong>Contractor:</strong> {{ contractor }}</span>
+    </div>
+
+    <!-- Tabs -->
+    <div class="rd-tabs">
+      <span class="rd-tab" [class.active]="activeTab === 'reasons'" (click)="activeTab = 'reasons'">
+        Select Reasons ({{ selectedReasons.length }})
+      </span>
+      <span class="rd-tab" [class.active]="activeTab === 'preview'" (click)="activeTab = 'preview'">
+        Email Preview
+      </span>
+      <span class="rd-tab" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'">
+        History ({{ notification.rejectionHistory().length }})
+      </span>
+    </div>
+
+    <!-- REASONS TAB -->
+    <div class="rd-body" *ngIf="activeTab === 'reasons'">
+      <button class="rd-auto-btn" (click)="autoSelectFromFailedChecks()" *ngIf="failedChecks.length > 0">
+        Auto-select from {{ failedChecks.length }} failed checks
+      </button>
+
+      <div class="rd-category" *ngFor="let cat of categories">
+        <div class="rd-cat-label">{{ cat.label }}</div>
+        <div class="rd-reason-list">
+          <label class="rd-reason" *ngFor="let reason of getReasonsForCategory(cat.key)"
+                 [class.selected]="isReasonSelected(reason)"
+                 (click)="toggleReason(reason)">
+            <span class="rd-checkbox">
+              <svg *ngIf="isReasonSelected(reason)" width="12" height="12" viewBox="0 0 12 12">
+                <rect x="1" y="1" width="10" height="10" rx="2" fill="#1e3a5f" stroke="#1e3a5f"/>
+                <path d="M3 6l2 2 4-4" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              </svg>
+              <svg *ngIf="!isReasonSelected(reason)" width="12" height="12" viewBox="0 0 12 12">
+                <rect x="1" y="1" width="10" height="10" rx="2" fill="none" stroke="#ccc" stroke-width="1.2"/>
+              </svg>
+            </span>
+            <span class="rd-reason-code">{{ reason.code }}</span>
+            <span class="rd-reason-label">{{ reason.label }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="rd-custom">
+        <label class="rd-custom-label">Additional Comments (optional)</label>
+        <textarea class="rd-textarea" [(ngModel)]="customMessage"
+                  placeholder="Add any additional context for the contractor..."
+                  rows="3"></textarea>
+      </div>
+    </div>
+
+    <!-- PREVIEW TAB -->
+    <div class="rd-body" *ngIf="activeTab === 'preview'">
+      <div class="rd-email-preview">
+        <div class="rd-email-header">
+          <span><strong>To:</strong> {{ contractorEmail || contractor + ' Document Control' }}</span>
+          <span><strong>Subject:</strong> Document Rejection: {{ documentNumber }} — Resubmission Required</span>
+        </div>
+        <pre class="rd-email-body">{{ emailPreview }}</pre>
+      </div>
+    </div>
+
+    <!-- HISTORY TAB -->
+    <div class="rd-body" *ngIf="activeTab === 'history'">
+      <div class="rd-history-empty" *ngIf="notification.rejectionHistory().length === 0">
+        No rejection history
+      </div>
+      <div class="rd-history-item" *ngFor="let rec of notification.rejectionHistory()">
+        <div class="rd-hist-header">
+          <span class="rd-hist-doc">{{ rec.documentNumber }}</span>
+          <span class="rd-hist-date">{{ rec.rejectedAt | date:'dd MMM yyyy HH:mm' }}</span>
+          <span class="rd-hist-sent" [class.sent]="rec.notificationSent">
+            {{ rec.notificationSent ? 'Sent' : 'Not Sent' }}
+          </span>
+        </div>
+        <div class="rd-hist-reasons">
+          <span class="rd-hist-reason" *ngFor="let r of rec.reasons">{{ r.code }}: {{ r.label }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="rd-footer">
+      <button class="rd-btn cancel" (click)="close()">Cancel</button>
+      <button class="rd-btn reject" (click)="onReject()"
+              [disabled]="selectedReasons.length === 0 || isSending()">
+        <span *ngIf="!isSending()">Reject & Send Notification</span>
+        <span *ngIf="isSending()">Sending...</span>
+      </button>
+    </div>
+  </div>
+</div>

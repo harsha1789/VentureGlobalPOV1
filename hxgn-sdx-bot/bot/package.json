@@ -1,0 +1,20 @@
+{
+  "name": "hxgn-sdx-bot",
+  "version": "1.0.0",
+  "description": "HxGN SDx Document Control Automation Bot",
+  "main": "bot.js",
+  "scripts": {
+    "bot": "node bot.js",
+    "test": "npx playwright test"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "@google/generative-ai": "^0.24.1",
+    "@playwright/test": "^1.40.0",
+    "dotenv": "^16.3.1",
+    "openai": "^6.34.0",
+    "pdf-parse": "^2.4.5",
+    "pdfkit": "^0.18.0",
+    "playwright": "^1.40.0"
+  }
+}

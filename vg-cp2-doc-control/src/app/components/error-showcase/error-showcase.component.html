@@ -1,0 +1,49 @@
+<div class="error-showcase-backdrop" *ngIf="isOpen">
+  <div class="error-showcase-panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Document Issue Showcase</div>
+        <div class="panel-subtitle">Review extracted text, OCR status, and file issue highlights.</div>
+      </div>
+      <button class="close-btn" (click)="close()">×</button>
+    </div>
+
+    <div class="panel-body" *ngIf="details">
+      <div class="summary-row">
+        <div>
+          <div class="summary-label">Document</div>
+          <div class="summary-value">{{ details.docName }}</div>
+        </div>
+        <div>
+          <div class="summary-label">OCR Status</div>
+          <div class="summary-pill" [ngClass]="details.ocrStatus">{{ details.ocrStatus | uppercase }}</div>
+        </div>
+      </div>
+
+      <div class="issue-section">
+        <div class="section-title">Detected issues</div>
+        <div class="issues-list" *ngIf="details.issues.length > 0; else noIssues">
+          <div class="issue-card" *ngFor="let issue of details.issues">
+            <div class="issue-meta">
+              <span class="issue-tag" [ngClass]="issue.status">{{ issue.status.toUpperCase() }}</span>
+              <span class="issue-title">{{ issue.label }}</span>
+            </div>
+            <div class="issue-note">{{ issue.note }}</div>
+          </div>
+        </div>
+        <ng-template #noIssues>
+          <div class="no-issues">No issues detected in this document.</div>
+        </ng-template>
+      </div>
+
+      <div class="preview-section">
+        <div class="section-title">Extracted document preview</div>
+        <pre>{{ details.previewText }}</pre>
+      </div>
+
+      <div class="footer-actions">
+        <button class="secondary" (click)="close()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

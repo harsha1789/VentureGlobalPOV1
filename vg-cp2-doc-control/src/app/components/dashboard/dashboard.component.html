@@ -1,0 +1,250 @@
+<div class="app-shell">
+
+  <!-- SDx RED TOP STRIP -->
+  <div class="sdx-strip">
+    <span class="sdx-strip-title">Results - VG CP2 Document Control Automation</span>
+    <div class="sdx-strip-right">
+      <span class="sdx-strip-role">{{ auth.getRoleLabel(auth.currentUser()?.role || 'viewer') }}</span>
+      <span class="sdx-strip-link">{{ auth.currentUser()?.displayName }}</span>
+    </div>
+  </div>
+
+  <!-- SDx TOPBAR with project tabs -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <svg viewBox="0 0 20 20" fill="none">
+          <polygon points="10,1 18,5.5 18,14.5 10,19 2,14.5 2,5.5" fill="white" opacity="0.9"/>
+          <polygon points="10,4 15,6.8 15,12.2 10,15 5,12.2 5,6.8" fill="#1a3a5c" opacity="0.7"/>
+        </svg>
+      </div>
+      <span class="topbar-title">To Do List</span>
+    </div>
+
+    <!-- Project Tabs -->
+    <nav class="project-tabs">
+      <a class="ptab active">C2 PROJECT</a>
+      <a class="ptab">CX PROJECT</a>
+      <a class="ptab">ML MARAD LATERAL</a>
+      <a class="ptab">P2 EXPANSION PROJECT</a>
+      <a class="ptab">PD PROJECT</a>
+      <a class="ptab">V2 PROJECT</a>
+      <a class="ptab">V3 SULFUR</a>
+    </nav>
+
+    <div class="topbar-right">
+      <div class="topbar-search">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="6" cy="6" r="4.5" stroke="#999" stroke-width="1.2"/>
+          <path d="M9.5 9.5L13 13" stroke="#999" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." class="search-input" />
+      </div>
+      <div class="topbar-actions">
+        <button class="sdx-action-btn" (click)="pipeline.exportCSV(auth.currentUser()?.username || '')"
+                *ngIf="auth.hasPermission('canExportAudit')">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v8M3 6l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Export All To Excel
+        </button>
+        <button class="sdx-action-btn" *ngIf="auth.hasPermission('canUploadFiles')">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 11V3M3 6l3-3 3 3M1 2h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Import List
+        </button>
+        <button class="sdx-action-btn highlight">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/></svg>
+          Supplier Items
+        </button>
+      </div>
+      <div class="tb-user">
+        <div class="tb-avatar">{{ auth.currentUser()?.initials }}</div>
+      </div>
+      <button class="tb-signout" (click)="onLogout()" [disabled]="isRunning()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M9 1H12V13H9M5 7H12M9 4l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="app-body">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="left-sidebar">
+      <!-- Main Tab Switcher -->
+      <div class="sidebar-tab-switcher">
+        <button class="sidebar-tab" [class.active]="activeMainTab === 'queue'"
+                (click)="activeMainTab = 'queue'"
+                *ngIf="auth.hasPermission('canClaimDocuments')">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="2" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/>
+            <path d="M4 5h6M4 7h4M4 9h5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+          To Do List
+          <span class="sidebar-tab-badge" *ngIf="pipeline.workQueue().length > 0">{{ pipeline.workQueue().length }}</span>
+        </button>
+        <button class="sidebar-tab" [class.active]="activeMainTab === 'upload'"
+                (click)="activeMainTab = 'upload'"
+                *ngIf="auth.hasPermission('canUploadFiles')">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 10V3M4 6l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M2 10v2h10v-2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Document Upload
+        </button>
+        <button class="sidebar-tab" [class.active]="activeMainTab === 'scenarios'"
+                (click)="activeMainTab = 'scenarios'">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 1.5l7.5 4.5L3 10.5V1.5z" fill="currentColor"/>
+          </svg>
+          Validation Demo
+        </button>
+      </div>
+
+      <!-- Scenario Panel (shown in demo mode) -->
+      <div *ngIf="activeMainTab === 'scenarios'" class="sidebar-content">
+        <vg-scenario-panel
+          [scenarios]="scenarios"
+          [selectedScenario]="selectedScenario()"
+          [isRunning]="isRunning()"
+          [stats]="pipeline.stats()"
+          (scenarioSelected)="onScenarioSelected($event)"
+          (runClicked)="onRunScenario()"
+        />
+      </div>
+
+      <!-- Queue summary (shown in queue mode) -->
+      <div *ngIf="activeMainTab === 'queue'" class="sidebar-content">
+        <div class="queue-summary">
+          <div class="qs-stat">
+            <span class="qs-num">{{ pipeline.workQueue().length }}</span>
+            <span class="qs-label">Total</span>
+          </div>
+          <div class="qs-stat">
+            <span class="qs-num submitted">{{ pipeline.workQueue() | filterByStatus:'pending' }}</span>
+            <span class="qs-label">Submitted</span>
+          </div>
+          <div class="qs-stat">
+            <span class="qs-num in-review">{{ pipeline.workQueue() | filterByStatus:'claimed' }}</span>
+            <span class="qs-label">In Review</span>
+          </div>
+        </div>
+
+        <!-- Session stats -->
+        <div class="sidebar-stats">
+          <div class="stats-row">
+            <div class="stat-item">
+              <span class="stat-num approved">{{ pipeline.stats().pass }}</span>
+              <span class="stat-lbl">Approved</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num rejected">{{ pipeline.stats().fail }}</span>
+              <span class="stat-lbl">Rejected</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num review">{{ pipeline.stats().review }}</span>
+              <span class="stat-lbl">For Review</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification log -->
+        <div class="sidebar-notifications" *ngIf="notification.notificationLog().length > 0">
+          <div class="sidebar-section-title">Recent Notifications</div>
+          <div class="notif-item" *ngFor="let n of notification.notificationLog().slice(0, 5)">
+            <span class="notif-type" [ngClass]="n.type">{{ n.type }}</span>
+            <span class="notif-subject">{{ n.subject | slice:0:40 }}...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload summary (shown in upload mode) -->
+      <div *ngIf="activeMainTab === 'upload'" class="sidebar-content">
+        <div class="upload-summary">
+          <div class="us-stat">
+            <span class="us-num">{{ ingestion.uploadedFiles().length }}</span>
+            <span class="us-label">Files</span>
+          </div>
+          <div class="us-stat">
+            <span class="us-num">{{ ingestion.loadSheetRows().length }}</span>
+            <span class="us-label">Load Sheet Rows</span>
+          </div>
+        </div>
+        <div class="sidebar-stats">
+          <div class="stats-row">
+            <div class="stat-item">
+              <span class="stat-num pass">{{ pipeline.stats().pass }}</span>
+              <span class="stat-lbl">Accepted</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num fail">{{ pipeline.stats().fail }}</span>
+              <span class="stat-lbl">Rejected</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num review">{{ pipeline.stats().review }}</span>
+              <span class="stat-lbl">Review</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-right">
+      <!-- WORK QUEUE (shown in queue mode) -->
+      <vg-work-queue *ngIf="activeMainTab === 'queue'"
+        [items]="pipeline.workQueue()"
+        [currentUser]="auth.currentUser()?.username || ''"
+        [isLoading]="pipeline.isLoadingQueue()"
+        (claimItem)="onClaimItem($event)"
+        (unclaimItem)="onUnclaimItem($event)"
+        (processItem)="onProcessQueueItem($event)"
+        (refreshQueue)="onRefreshQueue()"
+      />
+
+      <!-- FILE UPLOAD (shown in upload mode) -->
+      <vg-file-upload *ngIf="activeMainTab === 'upload'"
+        (filesReady)="onFilesReady($event)"
+        (processFiles)="onProcessUploadedFiles()"
+      />
+
+      <!-- AUDIT LOG (shown in scenarios mode or when records exist) -->
+      <vg-audit-log *ngIf="activeMainTab === 'scenarios' || pipeline.auditLog().length > 0"
+        [records]="pipeline.auditLog()"
+        [isRunning]="isRunning()"
+        [showRejectAction]="auth.hasPermission('canApproveReject')"
+        (clearClicked)="pipeline.clearAuditLog()"
+        (exportClicked)="pipeline.exportCSV(auth.currentUser()?.username || '')"
+        (rejectClicked)="openRejectionForRecord($event)"
+        (errorReportClicked)="onDownloadErrorReport($event)"
+        (viewDetailsClicked)="onViewErrorDetails($event)"
+      />
+
+      <vg-error-showcase
+        *ngIf="errorShowcaseOpen"
+        [isOpen]="errorShowcaseOpen"
+        [details]="showcaseDetails"
+        (closed)="closeErrorShowcase()"
+      />
+
+      <!-- BOTTOM DETAIL PANEL -->
+      <vg-terminal
+        [logs]="pipeline.terminalLog()"
+        [isRunning]="isRunning()"
+      />
+    </div>
+
+  </div>
+
+  <!-- REJECTION DIALOG (overlay) -->
+  <vg-rejection-dialog
+    [isOpen]="rejectionDialogOpen"
+    [documentName]="rejectionDocName"
+    [documentNumber]="rejectionDocNumber"
+    [contractor]="rejectionContractor"
+    [contractorEmail]="rejectionContractorEmail"
+    [failedChecks]="rejectionFailedChecks"
+    (closed)="onRejectionDialogClosed()"
+    (rejected)="onDocumentRejected($event)"
+  />
+</div>

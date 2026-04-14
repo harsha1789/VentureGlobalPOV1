@@ -1,0 +1,56 @@
+# Claude / AI assistant artifacts
+.claude/
+**/.claude/
+CLAUDE.md
+**/CLAUDE.md
+memory/
+**/memory/
+.claude.json
+.mcp.json
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencies
+node_modules/
+**/node_modules/
+.npm/
+
+# Build output
+dist/
+**/dist/
+build/
+out/
+out-tsc/
+
+# Angular cache
+.angular/
+**/.angular/
+
+# Playwright
+playwright-report/
+test-results/
+playwright/.cache/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Coverage
+coverage/

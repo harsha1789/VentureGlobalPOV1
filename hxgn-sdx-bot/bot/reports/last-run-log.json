@@ -1,0 +1,770 @@
+[
+  {
+    "timestamp": "2026-04-14T12:24:55.817Z",
+    "level": "info",
+    "step": 1,
+    "message": "Navigating to mimic app...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:24:56.906Z",
+    "level": "info",
+    "step": 1,
+    "message": "Entering credentials...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:24:57.800Z",
+    "level": "info",
+    "step": 1,
+    "message": "Clicking Sign In...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:24:58.510Z",
+    "level": "pass",
+    "step": 1,
+    "message": "Login successful — To Do List visible",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:01.452Z",
+    "level": "pass",
+    "step": 3,
+    "message": "Claimed VG-CP2-MEC-DWG-0001",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:02.617Z",
+    "level": "info",
+    "step": 4,
+    "message": "Validating submittal detail fields...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:02.638Z",
+    "level": "info",
+    "step": 4,
+    "message": "Field values:",
+    "details": {
+      "docNum": "VG-CP2-MEC-DWG-0001",
+      "revision": "A",
+      "fileType": "PDF",
+      "originator": "Worley Engineering",
+      "date": "2026-04-01"
+    }
+  },
+  {
+    "timestamp": "2026-04-14T12:25:02.640Z",
+    "level": "pass",
+    "step": 4,
+    "message": "All submittal detail fields valid",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:03.760Z",
+    "level": "info",
+    "step": 5,
+    "message": "Clicking \"View Load Datasheet\"...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:04.230Z",
+    "level": "pass",
+    "step": 5,
+    "message": "Load Datasheet screen opened",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:05.238Z",
+    "level": "info",
+    "step": 6,
+    "message": "Validating datasheet fields...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:05.261Z",
+    "level": "info",
+    "step": 6,
+    "message": "  Document Number: PASS — \"VG-CP2-MEC-DWG-0001\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:05.278Z",
+    "level": "info",
+    "step": 6,
+    "message": "  Title: PASS — \"Mechanical Equipment Layout — Train 1\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:05.288Z",
+    "level": "info",
+    "step": 6,
+    "message": "  Revision: PASS — \"A\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:05.302Z",
+    "level": "info",
+    "step": 6,
+    "message": "  File Type: PASS — \"PDF\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:05.316Z",
+    "level": "info",
+    "step": 6,
+    "message": "  Discipline: PASS — \"Mechanical\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:05.316Z",
+    "level": "pass",
+    "step": 6,
+    "message": "All datasheet fields passed validation",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:06.406Z",
+    "level": "info",
+    "step": 7,
+    "message": "Navigating back to detail screen...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:06.852Z",
+    "level": "info",
+    "step": 7,
+    "message": "Clicking \"View / Attach Document\"...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.301Z",
+    "level": "info",
+    "step": 7,
+    "message": "Document file: VG-CP2-MEC-DWG-0001_RevA.pdf",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.337Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ File format valid (PDF): PASS",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.338Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ File not corrupted: PASS",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.338Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ File size within limit (< 50 MB): PASS",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.360Z",
+    "level": "info",
+    "step": 7,
+    "message": "── Document Quality Checks (12) ──",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.360Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ OCR / Text Searchability: PASS — Readable text extracted on all 8 page(s) — 343 words, 2590 chars",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.361Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ No Draft Watermarks: PASS — No draft indicators found",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.361Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ No Markups or Annotations: PASS — No markup artifacts found",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.361Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Page Orientation: PASS — No orientation anomalies detected",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.361Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Document Metadata on Each Page: PASS — Document identity and security class present throughout",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.361Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Security Classification Present: PASS — Valid security classification found",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.361Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Revision History Complete: PASS — Revision history section present",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.362Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Document Structure: PASS — Sections: Yes | Signatures: Yes | Rev History: Yes",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.362Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Correct Contract Reference: PASS — C2 EPC-BOP contract reference confirmed",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.362Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Revision & Issue Purpose Alignment: PASS — Revision and issue purpose are aligned",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.362Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ File Completeness: PASS — Clean end-of-document marker found",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.362Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Second Cover Page: PASS — Document Control Information block present",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.362Z",
+    "level": "info",
+    "step": 7,
+    "message": "── Loadsheet vs Document (7) ──",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.362Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Document Number Match: PASS — Document number matches loadsheet: VG-CP2-MEC-DWG-0001",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.363Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Document Title Match: PASS — Document title matches loadsheet entry",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.363Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Revision Match: PASS — Revision matches: Rev A",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.363Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Discipline Match: PASS — Discipline matches: MEC",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.363Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ File Type Match: PASS — File type matches: PDF",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.363Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Security Classification Present: PASS — Security classification found in document: Company",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.364Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Issue Purpose Present: PASS — Issue purpose found in document: IFR",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.364Z",
+    "level": "info",
+    "step": 7,
+    "message": "── Transmittal Readiness (1) ──",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.364Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Transmittal Field Readiness: PASS — All required transmittal fields can be extracted from document",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:07.364Z",
+    "level": "pass",
+    "step": 7,
+    "message": "Document integrity — all 23 checks PASS",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:08.453Z",
+    "level": "info",
+    "step": 8,
+    "message": "Navigating back to detail screen...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:08.906Z",
+    "level": "info",
+    "step": 8,
+    "message": "Clicking \"Create Incoming Transmittal\"...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:09.381Z",
+    "level": "info",
+    "step": 8,
+    "message": "Transmittal number before generate: \"(Auto-generated)\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:09.382Z",
+    "level": "info",
+    "step": 8,
+    "message": "Clicking \"Generate Transmittal\"...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:09.824Z",
+    "level": "pass",
+    "step": 8,
+    "message": "Transmittal created: TR-CP2-MNYLGSNT",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:21.423Z",
+    "level": "PASS",
+    "step": 8.5,
+    "message": "VGL OCR: 15/15 checks passed for VG-CP2-MEC-DWG-0001 (6.1s)",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:22.554Z",
+    "level": "info",
+    "step": 9,
+    "message": "Navigating back to detail screen...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:23.002Z",
+    "level": "info",
+    "step": 9,
+    "message": "Clicking \"Approve Submittal\"...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:23.434Z",
+    "level": "info",
+    "step": 9,
+    "message": "Entering revision number: A",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:23.852Z",
+    "level": "info",
+    "step": 9,
+    "message": "Clicking Approve...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:24.297Z",
+    "level": "pass",
+    "step": 9,
+    "message": "Submittal approved with revision A",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:25.306Z",
+    "level": "info",
+    "step": 10,
+    "message": "Waiting for final status screen...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:25.318Z",
+    "level": "info",
+    "step": 10,
+    "message": "Complete button disabled: true",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:25.318Z",
+    "level": "info",
+    "step": 10,
+    "message": "Clicking \"Bot Reviewed\"...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:25.777Z",
+    "level": "pass",
+    "step": 10,
+    "message": "Status set to Bot Reviewed. Stopped before Complete.",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:25.777Z",
+    "level": "info",
+    "step": 10,
+    "message": "Bot execution complete. Manual review required before completion.",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:28.630Z",
+    "level": "pass",
+    "step": 3,
+    "message": "Claimed VG-CP2-PIP-DWG-0112",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:29.730Z",
+    "level": "info",
+    "step": 4,
+    "message": "Validating submittal detail fields...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:29.744Z",
+    "level": "info",
+    "step": 4,
+    "message": "Field values:",
+    "details": {
+      "docNum": "VG-CP2-PIP-DWG-0112",
+      "revision": "A",
+      "fileType": "PDF",
+      "originator": "Worley Engineering",
+      "date": "2026-04-05"
+    }
+  },
+  {
+    "timestamp": "2026-04-14T12:25:29.745Z",
+    "level": "pass",
+    "step": 4,
+    "message": "All submittal detail fields valid",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:30.832Z",
+    "level": "info",
+    "step": 5,
+    "message": "Clicking \"View Load Datasheet\"...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:31.311Z",
+    "level": "pass",
+    "step": 5,
+    "message": "Load Datasheet screen opened",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:32.320Z",
+    "level": "info",
+    "step": 6,
+    "message": "Validating datasheet fields...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:32.347Z",
+    "level": "info",
+    "step": 6,
+    "message": "  Document Number: PASS — \"VG-CP2-PIP-DWG-0112\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:32.368Z",
+    "level": "info",
+    "step": 6,
+    "message": "  Title: PASS — \"Piping Isometric — Scanned Drawing Area 400\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:32.383Z",
+    "level": "info",
+    "step": 6,
+    "message": "  Revision: PASS — \"A\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:32.401Z",
+    "level": "info",
+    "step": 6,
+    "message": "  File Type: PASS — \"PDF\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:32.415Z",
+    "level": "info",
+    "step": 6,
+    "message": "  Discipline: PASS — \"Piping\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:32.415Z",
+    "level": "pass",
+    "step": 6,
+    "message": "All datasheet fields passed validation",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:33.513Z",
+    "level": "info",
+    "step": 7,
+    "message": "Navigating back to detail screen...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:33.953Z",
+    "level": "info",
+    "step": 7,
+    "message": "Clicking \"View / Attach Document\"...",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.404Z",
+    "level": "info",
+    "step": 7,
+    "message": "Document file: VG-CP2-PIP-DWG-0112_RevA.pdf",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.437Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ File format valid (PDF): PASS",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.438Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ File not corrupted: PASS",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.438Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ File size within limit (< 50 MB): PASS",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.455Z",
+    "level": "info",
+    "step": 7,
+    "message": "── Document Quality Checks (12) ──",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.456Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ OCR / Text Searchability: FAIL — Image-only page(s) detected: 3 — no OCR text layer (per-page chars: [393, 74, 0])",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.456Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ No Draft Watermarks: PASS — No draft indicators found",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.456Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ No Markups or Annotations: PASS — No markup artifacts found",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.456Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Page Orientation: PASS — No orientation anomalies detected",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.456Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Document Metadata on Each Page: FAIL — Metadata may not appear on all pages",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.456Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Security Classification Present: FAIL — Security classification missing or invalid",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.457Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Revision History Complete: FAIL — Revision history missing",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.457Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Document Structure: FAIL — Sections: No | Signatures: No | Rev History: No",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.457Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Correct Contract Reference: PASS — C2 EPC-BOP contract reference confirmed",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.457Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Revision & Issue Purpose Alignment: PASS — Revision and issue purpose are aligned",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.457Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ File Completeness: FAIL — No end marker — file may be truncated",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.457Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Second Cover Page: FAIL — Second cover page not detected",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.457Z",
+    "level": "info",
+    "step": 7,
+    "message": "── Loadsheet vs Document (7) ──",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.457Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Document Number Match: FAIL — Mismatch — Document: \"VG-CP1-PIP-DWG-9999\" vs Loadsheet: \"VG-CP2-PIP-DWG-0112\"",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.457Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Document Title Match: PASS — Document title matches loadsheet entry",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.458Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Revision Match: PASS — Revision matches: Rev A",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.458Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ Discipline Match: PASS — Discipline matches: PIP",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.458Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✓ File Type Match: PASS — File type matches: PDF",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.458Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Security Classification Present: FAIL — Security classification not found in document — required field",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.458Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Issue Purpose Present: FAIL — Issue purpose not found in document — required field",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.458Z",
+    "level": "info",
+    "step": 7,
+    "message": "── Transmittal Readiness (3) ──",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.458Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Transmittal Field Readiness: FAIL — Missing fields for transmittal: issuePurpose, securityClassification",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.459Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Missing: issuePurpose: FAIL — \"issuePurpose\" could not be extracted from document — transmittal will be incomplete",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.459Z",
+    "level": "info",
+    "step": 7,
+    "message": "  ✗ Missing: securityClassification: FAIL — \"securityClassification\" could not be extracted from document — transmittal will be incomplete",
+    "details": null
+  },
+  {
+    "timestamp": "2026-04-14T12:25:34.459Z",
+    "level": "fail",
+    "step": 7,
+    "message": "Document checks FAILED — 13 issue(s): OCR / Text Searchability: FAIL (Image-only page(s) detected: 3 — no OCR text layer (per-page chars: [393, 74, 0])); Document Metadata on Each Page: FAIL (Metadata may not appear on all pages); Security Classification Present: FAIL (Security classification missing or invalid); Revision History Complete: FAIL (Revision history missing); Document Structure: FAIL (Sections: No | Signatures: No | Rev History: No); File Completeness: FAIL (No end marker — file may be truncated); Second Cover Page: FAIL (Second cover page not detected); Document Number Match: FAIL (Mismatch — Document: \"VG-CP1-PIP-DWG-9999\" vs Loadsheet: \"VG-CP2-PIP-DWG-0112\"); Security Classification Present: FAIL (Security classification not found in document — required field); Issue Purpose Present: FAIL (Issue purpose not found in document — required field); Transmittal Field Readiness: FAIL (Missing fields for transmittal: issuePurpose, securityClassification); Missing: issuePurpose: FAIL (\"issuePurpose\" could not be extracted from document — transmittal will be incomplete); Missing: securityClassification: FAIL (\"securityClassification\" could not be extracted from document — transmittal will be incomplete)",
+    "details": null
+  }
+]

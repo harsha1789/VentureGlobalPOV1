@@ -1,0 +1,139 @@
+<div class="work-queue-panel">
+  <!-- Toolbar -->
+  <div class="wq-toolbar">
+    <div class="wq-toolbar-left">
+      <button class="wq-toolbar-btn" (click)="onRefresh()" [disabled]="isLoading" title="Refresh queue">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7a6 6 0 0111.5-2M13 7a6 6 0 01-11.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M12 2v3h-3M2 12V9h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="wq-sep"></span>
+      <span class="wq-info">{{ filteredItems.length }} items</span>
+      <span class="wq-badge pending">{{ pendingCount }} pending</span>
+      <span class="wq-badge claimed" *ngIf="claimedByMeCount > 0">{{ claimedByMeCount }} mine</span>
+    </div>
+    <div class="wq-toolbar-right">
+      <!-- Filters -->
+      <select class="wq-filter" [(ngModel)]="filterProject">
+        <option value="">All Projects</option>
+        <option *ngFor="let p of uniqueProjects" [value]="p">{{ p }}</option>
+      </select>
+      <select class="wq-filter" [(ngModel)]="filterDiscipline">
+        <option value="">All Disciplines</option>
+        <option *ngFor="let d of uniqueDisciplines" [value]="d">{{ d }}</option>
+      </select>
+      <select class="wq-filter" [(ngModel)]="filterStatus">
+        <option value="">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="claimed">Claimed</option>
+        <option value="in_review">In Review</option>
+      </select>
+      <button class="wq-clear-btn" (click)="clearFilters()" *ngIf="filterProject || filterDiscipline || filterContractor || filterStatus">Clear</button>
+    </div>
+  </div>
+
+  <!-- Queue Table -->
+  <div class="wq-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="th-priority"></th>
+          <th>Submittal ID</th>
+          <th>Document</th>
+          <th>Contractor</th>
+          <th>Contract</th>
+          <th>Discipline</th>
+          <th>Type</th>
+          <th>Issue Purpose</th>
+          <th>Submitted</th>
+          <th>Target</th>
+          <th>Docs</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredItems.length === 0">
+          <td colspan="13">
+            <div class="wq-empty">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <rect x="3" y="5" width="22" height="18" rx="2" stroke="#ccc" stroke-width="1.5" fill="none"/>
+                <path d="M3 10h22" stroke="#ccc" stroke-width="1.5"/>
+                <path d="M8 15h12M8 19h8" stroke="#ddd" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              <span>No submittals in queue</span>
+            </div>
+          </td>
+        </tr>
+        <tr *ngFor="let item of filteredItems; trackBy: trackById"
+            [class.overdue]="isOverdue(item)"
+            [class.claimed-by-me]="item.claimedBy === currentUser">
+          <!-- Priority indicator -->
+          <td class="td-priority">
+            <span class="priority-dot" [ngClass]="priorityClass(item.priority)" [title]="item.priority"></span>
+          </td>
+
+          <!-- Submittal ID -->
+          <td class="td-submittal">{{ item.submittalId }}</td>
+
+          <!-- Document -->
+          <td class="td-doc" [title]="item.documentNumber">{{ item.documentNumber }}</td>
+
+          <!-- Contractor -->
+          <td class="td-contractor">{{ item.contractor }}</td>
+
+          <!-- Contract -->
+          <td class="td-contract">{{ item.contract }}</td>
+
+          <!-- Discipline -->
+          <td class="td-disc">
+            <span class="disc-badge">{{ item.discipline }}</span>
+          </td>
+
+          <!-- Type -->
+          <td class="td-type">{{ item.documentType }}</td>
+
+          <!-- Issue Purpose -->
+          <td class="td-purpose">
+            <span class="purpose-badge">{{ item.issuePurpose }}</span>
+          </td>
+
+          <!-- Submitted Date -->
+          <td class="td-date">{{ formatDate(item.submittedDate) }}</td>
+
+          <!-- Target Date -->
+          <td class="td-date" [class.overdue-date]="isOverdue(item)">
+            {{ formatDate(item.targetDate) }}
+            <span class="days-badge" *ngIf="!isOverdue(item) && daysUntilTarget(item) <= 3">{{ daysUntilTarget(item) }}d</span>
+            <span class="overdue-badge" *ngIf="isOverdue(item)">OVERDUE</span>
+          </td>
+
+          <!-- Doc count -->
+          <td class="td-count">{{ item.documentCount }}</td>
+
+          <!-- Status -->
+          <td class="td-status">
+            <span class="status-pill" [ngClass]="item.status">{{ statusLabel(item.status) }}</span>
+          </td>
+
+          <!-- Actions -->
+          <td class="td-actions">
+            <button class="action-btn claim" *ngIf="item.status === 'pending'"
+                    (click)="onClaim(item.id)" title="Claim this submittal">
+              Claim
+            </button>
+            <button class="action-btn unclaim" *ngIf="item.claimedBy === currentUser && item.status === 'claimed'"
+                    (click)="onUnclaim(item.id)" title="Release this submittal">
+              Release
+            </button>
+            <button class="action-btn process" *ngIf="item.claimedBy === currentUser"
+                    (click)="onProcess(item)" title="Process this submittal">
+              Process
+            </button>
+            <span class="claimed-label" *ngIf="item.claimedBy && item.claimedBy !== currentUser">
+              {{ item.claimedBy }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

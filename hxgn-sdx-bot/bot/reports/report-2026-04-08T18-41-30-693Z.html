@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HxGN SDx Bot Execution Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; padding: 32px; color: #333; }
+    .report { max-width: 960px; margin: 0 auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+    .header { background: #003b5c; color: #fff; padding: 24px 32px; }
+    .header h1 { font-size: 22px; margin-bottom: 4px; }
+    .header .sub { font-size: 14px; opacity: 0.8; }
+    .meta { padding: 20px 32px; background: #f0f4f8; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 14px; }
+    .meta .label { font-weight: 600; color: #666; }
+    .content { padding: 24px 32px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th { background: #003b5c; color: #fff; padding: 10px 14px; text-align: left; font-size: 13px; text-transform: uppercase; }
+    td { padding: 10px 14px; border-bottom: 1px solid #e0e0e0; font-size: 14px; }
+    tr:hover { background: #f9f9f9; }
+    .pass { color: #2e7d32; font-weight: 700; }
+    .fail { color: #c62828; font-weight: 700; }
+    .footer { padding: 20px 32px; background: #f0f4f8; border-top: 2px solid #003b5c; font-size: 14px; }
+    .footer .final-status { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .footer .final-status.ok { color: #2e7d32; }
+    .footer .final-status.err { color: #c62828; }
+    a { color: #00a3e0; }
+  </style>
+</head>
+<body>
+  <div class="report">
+    <div class="header">
+      <h1>HxGN SDx Bot Execution Report</h1>
+      <div class="sub">Venture Global CP2 LNG — Document Control Automation</div>
+    </div>
+    <div class="meta">
+      <div><span class="label">Run Date & Time:</span> 9/4/2026, 12:10:47 am</div>
+      <div><span class="label">Duration:</span> 42.5s</div>
+      <div><span class="label">Bot User:</span> dc_bot</div>
+      <div><span class="label">Document Processed:</span> VG-CP2-MEC-DWG-0001</div>
+    </div>
+    <div class="content">
+      <h2 style="font-size:18px;color:#003b5c;margin-bottom:8px;">Execution Summary</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Step</th><th>Status</th><th>Notes</th><th>Screenshot</th></tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>1</td>
+        <td>Login</td>
+        <td class="pass">PASS</td>
+        <td>Logged in as dc_bot</td>
+        <td><a href="../screenshots/step01.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Identify Document in To Do List</td>
+        <td class="pass">PASS</td>
+        <td>Doc No: VG-CP2-MEC-DWG-0001</td>
+        <td><a href="../screenshots/step02.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Claim Submittal</td>
+        <td class="pass">PASS</td>
+        <td>Claimed VG-CP2-MEC-DWG-0001</td>
+        <td><a href="../screenshots/step03.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Validate Submittal Detail Screen</td>
+        <td class="pass">PASS</td>
+        <td>DocNum=VG-CP2-MEC-DWG-0001, Rev=A, Type=PDF</td>
+        <td><a href="../screenshots/step04.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Open Load Datasheet</td>
+        <td class="pass">PASS</td>
+        <td></td>
+        <td><a href="../screenshots/step05.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Validate Datasheet Fields</td>
+        <td class="pass">PASS</td>
+        <td>Document Number: PASS (VG-CP2-MEC-DWG-0001); Title: PASS (Mechanical Equipment Layout — Train 1); Revision: PASS (A); File Type: PASS (PDF); Discipline: PASS (Mechanical)</td>
+        <td><a href="../screenshots/step06.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Document Integrity Check</td>
+        <td class="pass">PASS</td>
+        <td>File: VG-CP2-MEC-DWG-0001_RevA.pdf</td>
+        <td><a href="../screenshots/step07.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Create Incoming Transmittal</td>
+        <td class="pass">PASS</td>
+        <td>Transmittal: TR-CP2-MNQE9DZ0</td>
+        <td><a href="../screenshots/step08.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Approve Submittal</td>
+        <td class="pass">PASS</td>
+        <td>Revision: A</td>
+        <td><a href="../screenshots/step09.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>Set Bot Reviewed Status</td>
+        <td class="pass">PASS</td>
+        <td>Stopped before Complete</td>
+        <td><a href="../screenshots/step10.png" target="_blank">View</a></td>
+      </tr></tbody>
+      </table>
+    </div>
+    <div class="footer">
+      <div class="final-status ok">
+        Final Status: Bot Reviewed &#10003;
+      </div>
+      <div>Next Action: Manual DC review required to mark Complete</div>
+    </div>
+  </div>
+</body>
+</html>

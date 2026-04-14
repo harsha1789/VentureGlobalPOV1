@@ -1,0 +1,173 @@
+<div class="sdx-grid-panel">
+  <!-- Grid toolbar -->
+  <div class="grid-toolbar">
+    <div class="toolbar-left">
+      <button class="toolbar-icon-btn" title="Refresh" (click)="clearClicked.emit()" [disabled]="isRunning">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7a6 6 0 0111.5-2M13 7a6 6 0 01-11.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M12 2v3h-3M2 12V9h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="toolbar-icon-btn" title="Export">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 10v2h10v-2M7 2v7M4 5l3-3 3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="toolbar-sep"></span>
+      <span class="toolbar-info">{{ recordCount }}</span>
+    </div>
+    <div class="toolbar-right">
+      <span class="toolbar-page" *ngIf="records.length > 0">1 - {{ records.length }} of {{ records.length }} items</span>
+      <button class="toolbar-icon-btn small" title="Grid View">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="4" height="4" stroke="currentColor" stroke-width="1"/><rect x="7" y="1" width="4" height="4" stroke="currentColor" stroke-width="1"/><rect x="1" y="7" width="4" height="4" stroke="currentColor" stroke-width="1"/><rect x="7" y="7" width="4" height="4" stroke="currentColor" stroke-width="1"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- SDx Data Grid -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="th-chk"><input type="checkbox" /></th>
+          <th class="th-icon"></th>
+          <th class="th-icon"></th>
+          <th>Correspondence No.</th>
+          <th>Step Name</th>
+          <th>Submittal Description</th>
+          <th>Reason For Iss...</th>
+          <th>Submittal Type</th>
+          <th>Target Date</th>
+          <th>Creation Date</th>
+          <th>Details</th>
+          <th>Score</th>
+          <th>Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Empty state -->
+        <tr *ngIf="records.length === 0">
+          <td colspan="13">
+            <div class="empty-state">
+              <div class="empty-icon">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                  <polygon points="16,2 30,9 30,23 16,30 2,23 2,9" fill="none" stroke="#ccc" stroke-width="1.5"/>
+                  <polygon points="16,6 26,11 26,21 16,26 6,21 6,11" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+                </svg>
+              </div>
+              <div class="empty-txt">No records yet - run a scenario to begin</div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Records -->
+        <tr
+          *ngFor="let rec of records; trackBy: trackById"
+          [class.processing]="isProcessing(rec)"
+          [class.selected]="false"
+        >
+          <td class="td-chk"><input type="checkbox" /></td>
+
+          <!-- Status flags (SDx style red/green) -->
+          <td class="td-icon">
+            <span class="sdx-flag" *ngIf="!isProcessing(rec)" [ngClass]="decisionClass(rec.decision)">
+              <svg *ngIf="rec.decision === 'accept'" width="14" height="14" viewBox="0 0 14 14"><path d="M2 7l4 4 6-7" stroke="#16a34a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg *ngIf="rec.decision === 'reject'" width="14" height="14" viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/></svg>
+              <svg *ngIf="rec.decision === 'review'" width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" fill="none" stroke="#d97706" stroke-width="1.5"/><path d="M7 4v4M7 9.5v.5" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+            <span class="sdx-flag processing" *ngIf="isProcessing(rec)">
+              <span class="spin-dot-sdx"></span>
+            </span>
+          </td>
+
+          <!-- Action icon (SDx blue magnifying glass) -->
+          <td class="td-icon">
+            <span class="sdx-action-icon" title="View details">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="5.5" cy="5.5" r="4" stroke="#1e3a5f" stroke-width="1.3"/><path d="M8.5 8.5L12 12" stroke="#1e3a5f" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </span>
+          </td>
+
+          <!-- Correspondence No (doc name) -->
+          <td class="td-correspondence" [title]="rec.documentName">{{ rec.documentName }}</td>
+
+          <!-- Step Name (scenario) -->
+          <td class="td-step">
+            <span class="step-badge" *ngIf="!isProcessing(rec)">{{ rec.scenario }}</span>
+            <span class="step-badge processing" *ngIf="isProcessing(rec)">Processing...</span>
+          </td>
+
+          <!-- Submittal Description -->
+          <td class="td-desc">
+            <span *ngIf="!isProcessing(rec)">{{ rec.checks.totalPass }}P / {{ rec.checks.totalFail }}F / {{ rec.checks.totalWarn }}W - TRN {{ rec.trnNumber }}</span>
+            <span *ngIf="isProcessing(rec)" class="processing-text">Validating...</span>
+          </td>
+
+          <!-- Reason For Issue -->
+          <td class="td-reason">
+            <span *ngIf="!isProcessing(rec)">{{ decisionLabel(rec.decision) }}</span>
+          </td>
+
+          <!-- Submittal Type -->
+          <td class="td-type">Technical</td>
+
+          <!-- Target Date -->
+          <td class="td-date">{{ formatDate(rec.timestamp) }}</td>
+
+          <!-- Creation Date -->
+          <td class="td-date">{{ formatDate(rec.timestamp) }}</td>
+
+          <!-- Details -->
+          <td class="td-details">
+            <div class="tier-tags" *ngIf="!isProcessing(rec)">
+              <span class="tier-tag" *ngFor="let t of rec.tiersRun" [ngClass]="t">{{ t }}</span>
+            </div>
+          </td>
+
+          <!-- Score -->
+          <td class="td-score" *ngIf="!isProcessing(rec)">
+            <div class="score-bar">
+              <div class="bar-track">
+                <div class="bar-fill" [style.width.%]="rec.score" [style.background]="scoreColor(rec.score)"></div>
+              </div>
+              <span class="bar-val">{{ rec.score }}%</span>
+            </div>
+          </td>
+          <td *ngIf="isProcessing(rec)">-</td>
+
+          <!-- Decision pill -->
+          <td *ngIf="!isProcessing(rec)">
+            <span class="sdx-decision" [ngClass]="decisionClass(rec.decision)">
+              {{ decisionLabel(rec.decision) }}
+            </span>
+            <button class="reject-action-btn" *ngIf="showRejectAction && rec.decision === 'reject'"
+                    (click)="rejectClicked.emit(rec)" title="Send rejection notification">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M1 1h8v7H1z" stroke="currentColor" stroke-width="1" fill="none"/>
+                <path d="M1 1l4 3.5L9 1" stroke="currentColor" stroke-width="1" fill="none"/>
+              </svg>
+            </button>
+            <button class="view-details-btn" *ngIf="rec.checks.totalFail > 0 || rec.checks.totalWarn > 0"
+                    (click)="viewDetailsClicked.emit(rec)" title="Show document error details">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M5 1.5c-2.5 0-4 2-4 3.5S2.5 8.5 5 8.5 9 7 9 5 7.5 1.5 5 1.5Z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                <path d="M5 3.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3Z" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="error-report-btn" *ngIf="rec.checks.totalFail > 0 || rec.checks.totalWarn > 0"
+                    (click)="errorReportClicked.emit(rec)" title="Download error report PDF">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M5 1v5M3 4l2 2 2-2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M1 7v2h8V7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </td>
+          <td *ngIf="isProcessing(rec)">
+            <span class="sdx-decision processing">Processing</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bottom tabs (SUBMITTAL, WORKFLOW) -->
+  <div class="grid-bottom-tabs">
+    <span class="bottom-tab">TASK ITEM</span>
+    <span class="bottom-tab active">SUBMITTAL</span>
+    <span class="bottom-tab">WORKFLOW LOG</span>
+  </div>
+</div>

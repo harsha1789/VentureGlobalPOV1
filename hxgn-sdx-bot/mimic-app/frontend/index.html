@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Control</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SCREEN 1: LOGIN
+       ══════════════════════════════════════════════════════════════════ -->
+  <div id="login-screen" class="screen active">
+    <div class="login-bg">
+      <div class="login-card">
+        <div class="brand">
+          <div class="brand-logo">
+            <div class="hexagon-icon-lg"></div>
+            <span class="brand-text">Document Control</span>
+          </div>
+          <h1>Document Exchange</h1>
+          <div class="subtitle">Engineering Document Management</div>
+        </div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" data-testid="login-username" placeholder="Enter username" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" data-testid="login-password" placeholder="Enter password" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" data-testid="login-button">
+            Sign In
+          </button>
+          <div id="login-error" class="login-error" data-testid="login-error">
+            Invalid username or password.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       APP SHELL (top bar + header + sidebar + content area)
+       ══════════════════════════════════════════════════════════════════ -->
+  <div id="app-shell" style="display:none;">
+
+    <!-- Royal blue header with project tabs -->
+    <header id="app-header">
+      <div class="header-left">
+        <div class="hexagon-icon"></div>
+        <span class="header-title">Document Control</span>
+        <div class="project-tabs">
+          <span class="project-tab active">C2 PROJECT</span>
+          <span class="project-tab">CX PROJECT</span>
+          <span class="project-tab">ML MANAS LATERAL</span>
+          <span class="project-tab">PO EXPANSION PROJECT</span>
+          <span class="project-tab">PO PROJECT</span>
+          <span class="project-tab">VO PROJECT</span>
+          <span class="project-tab">VS SULPHUR</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="header-search">&#128269; Search</span>
+        <span class="header-pill"><span class="hp-icon">&#128100;</span> 1 Selected</span>
+        <span class="header-pill"><span class="hp-icon">&#10133;</span> CI Project</span>
+        <span class="header-pill"><span class="hp-icon">&#128101;</span> 1 Selected</span>
+        <span class="user-display" id="header-username" data-testid="header-username"></span>
+        <button class="logout-btn" data-testid="logout-button" onclick="doLogout()">Logout</button>
+      </div>
+    </header>
+
+    <!-- Workspace tab strip — shows the open "To Do List" workspace -->
+    <div id="workspace-tabs">
+      <div class="workspace-tab">
+        To Do List <span class="tab-close">&times;</span>
+      </div>
+    </div>
+
+    <div id="app-body">
+
+      <!-- Far-left dark icon rail -->
+      <nav id="icon-rail">
+        <div class="rail-icon active" title="To Do">&#9776;</div>
+        <div class="rail-icon" title="Search">&#128269;</div>
+        <div class="rail-icon" title="Documents">&#128196;</div>
+        <div class="rail-icon" title="Transmittals">&#128229;</div>
+        <div class="rail-icon" title="Reports">&#128202;</div>
+        <div class="rail-icon" title="Workflow">&#128279;</div>
+        <div class="rail-icon" title="Settings">&#9881;</div>
+      </nav>
+
+      <!-- Light task panel sidebar -->
+      <nav id="sidebar">
+        <div class="sidebar-tabs">
+          <div class="sidebar-tab active">TASK</div>
+          <div class="sidebar-tab">SUBMITTAL</div>
+        </div>
+        <div class="sidebar-toolbar">
+          <span class="sidebar-tool" title="Search">&#128269;</span>
+          <span class="sidebar-tool" title="Filter">&#9776;</span>
+          <span class="sidebar-tool" title="Sort">&#8645;</span>
+          <span class="sidebar-tool" title="Refresh">&#8635;</span>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+            <span class="sidebar-arrow">&#9660;</span> Actions
+          </div>
+          <div class="sidebar-items">
+            <div class="nav-item active" onclick="navigateTo('todo')" data-testid="nav-todo">
+              <span class="nav-icon">&#9776;</span> <span class="nav-label">Claim Workflow Step</span>
+            </div>
+            <div class="nav-item"><span class="nav-icon">&#128465;</span> <span class="nav-label">Delete</span></div>
+            <div class="nav-item" data-testid="nav-transmittals">
+              <span class="nav-icon">&#128229;</span> <span class="nav-label">Export Data</span>
+            </div>
+            <div class="nav-item"><span class="nav-icon">&#128214;</span> <span class="nav-label">History</span></div>
+            <div class="nav-item"><span class="nav-icon">&#128279;</span> <span class="nav-label">View Workflow</span></div>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+            <span class="sidebar-arrow">&#9660;</span> Relationships
+          </div>
+          <div class="sidebar-items">
+            <div class="nav-item"><span class="nav-icon">&#9654;</span> <span class="nav-label">Show Expedited From</span></div>
+            <div class="nav-item"><span class="nav-icon">&#9654;</span> <span class="nav-label">Show Flatch Steps</span></div>
+            <div class="nav-item"><span class="nav-icon">&#9654;</span> <span class="nav-label">Show Related Steps</span></div>
+            <div class="nav-item"><span class="nav-icon">&#9654;</span> <span class="nav-label">Show Workflow</span></div>
+          </div>
+        </div>
+      </nav>
+
+      <main id="main-content">
+
+        <!-- ════════════════════════════════════════════════════════════
+             SCREEN 2: TO DO LIST
+             ════════════════════════════════════════════════════════════ -->
+        <div id="todo-screen" class="screen" data-testid="todo-screen">
+          <!-- Filter tabs above table -->
+          <div class="filter-bar">
+            <span class="filter-tab active" data-count="15">All</span>
+            <span class="filter-tab overdue" data-count="2">OVERDUE</span>
+            <span class="filter-tab" data-count="8">My Assigned Content Tasks</span>
+            <span class="filter-tab" data-count="2">My Non-claimed Tasks</span>
+            <span class="filter-tab" data-count="11">Submittal</span>
+            <span class="filter-tab" data-count="2">Transmittal</span>
+            <button class="btn-toolbar" onclick="loadTodoList()" data-testid="refresh-btn" title="Refresh">&#8635; Refresh</button>
+          </div>
+          <div class="todo-grid-wrapper">
+            <table class="sdx-table" data-testid="todo-table">
+              <thead>
+                <tr>
+                  <th class="col-chk"><input type="checkbox" disabled></th>
+                  <th class="col-icon" title="Flags"></th>
+                  <th class="col-icon" title="Status Icon"></th>
+                  <th>Correspondence No.</th>
+                  <th>Step Name</th>
+                  <th>Submittal Description</th>
+                  <th>Reason For Iss...</th>
+                  <th>Submittal Type</th>
+                  <th>Target Date</th>
+                  <th>Creation Date</th>
+                  <th>Details</th>
+                  <th>Prio...</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="todo-tbody" data-testid="todo-tbody">
+              </tbody>
+            </table>
+          </div>
+          <!-- Bottom detail panel -->
+          <div id="bottom-panel" class="bottom-panel">
+            <div class="bottom-panel-tabs">
+              <span class="bp-tab active">DETAILS</span>
+              <span class="bp-tab">STRUCTURE</span>
+              <span class="bp-tab">HISTORY</span>
+            </div>
+            <div class="bottom-panel-content">
+              <div class="bp-row">
+                <div class="bp-field"><span class="bp-label">Name</span><span class="bp-value" id="bp-name">—</span></div>
+                <div class="bp-field"><span class="bp-label">Title</span><span class="bp-value" id="bp-title">—</span></div>
+                <div class="bp-field"><span class="bp-label">Created at</span><span class="bp-value" id="bp-created">—</span></div>
+                <div class="bp-field"><span class="bp-label">Type</span><span class="bp-value" id="bp-type">—</span></div>
+              </div>
+              <div class="bp-section-header">
+                <button class="btn-link">Add Attachment</button>
+              </div>
+              <div class="bp-separator">DRL details <button class="btn-link">Sequence info</button></div>
+              <div class="bp-row">
+                <div class="bp-field"><span class="bp-label">From organisation</span><span class="bp-value" id="bp-from-org">—</span></div>
+                <div class="bp-field"><span class="bp-label">Contract</span><span class="bp-value" id="bp-contract">—</span></div>
+                <div class="bp-field"><span class="bp-label">Submittal Type</span><span class="bp-value" id="bp-sub-type">—</span></div>
+              </div>
+              <div class="bp-row">
+                <div class="bp-field"><span class="bp-label">To organisation</span><span class="bp-value" id="bp-to-org">—</span></div>
+                <div class="bp-field"><span class="bp-label">Discipline</span><span class="bp-value" id="bp-discipline">—</span></div>
+                <div class="bp-field"><span class="bp-label">Reason for issue</span><span class="bp-value" id="bp-reason">—</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════════════
+             CLAIM MODAL OVERLAY
+             ════════════════════════════════════════════════════════════ -->
+        <div id="claim-modal" class="modal-overlay" style="display:none;">
+          <div class="modal-dialog">
+            <div class="modal-header">Claim Workflow Step</div>
+            <div class="modal-body">
+              <div class="claim-spinner-area">
+                <div class="spinner-lg"></div>
+                <p class="claim-progress-text">Claiming workflow step...</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline btn-sm" onclick="document.getElementById('claim-modal').style.display='none'">Cancel</button>
+              <button class="btn btn-primary btn-sm" disabled>OK</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════════════
+             SCREEN 3: SUBMITTAL DETAIL
+             ════════════════════════════════════════════════════════════ -->
+        <div id="detail-screen" class="screen" data-testid="detail-screen">
+          <div class="breadcrumb">
+            <a href="#" onclick="navigateTo('todo')">To Do List</a> &raquo; Submittal Detail
+          </div>
+          <!-- Detail toolbar buttons -->
+          <div class="detail-toolbar">
+            <button class="btn-toolbar" onclick="openDatasheet()" data-testid="view-datasheet-btn">
+              <span class="tb-icon">&#128202;</span> View Load Datasheet
+            </button>
+            <button class="btn-toolbar" onclick="openDocViewer()" data-testid="view-document-btn">
+              <span class="tb-icon">&#128196;</span> View / Attach Document
+            </button>
+            <button class="btn-toolbar" onclick="openTransmittal()" data-testid="create-transmittal-btn">
+              <span class="tb-icon">&#128229;</span> Create Incoming Transmittal
+            </button>
+            <button class="btn-toolbar btn-toolbar-green" onclick="openApproval()" data-testid="approve-btn">
+              <span class="tb-icon">&#9989;</span> Approve Submittal
+            </button>
+            <span class="status-badge" id="detail-status" data-testid="detail-status"></span>
+          </div>
+          <!-- Detail content in bottom-panel style -->
+          <div class="detail-panel-wrapper">
+            <div class="bottom-panel-tabs">
+              <span class="bp-tab active">DETAILS</span>
+              <span class="bp-tab">STRUCTURE</span>
+              <span class="bp-tab">HISTORY</span>
+            </div>
+            <div class="detail-panel-body">
+              <div class="dp-section">
+                <div class="dp-grid">
+                  <div class="dp-field">
+                    <span class="dp-label">Name</span>
+                    <span class="dp-value" id="detail-docnum" data-testid="detail-docnum"></span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">Title</span>
+                    <span class="dp-value" id="detail-title" data-testid="detail-title"></span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">Created at</span>
+                    <span class="dp-value" id="detail-date" data-testid="detail-date"></span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">Type</span>
+                    <span class="dp-value" id="detail-filetype" data-testid="detail-filetype"></span>
+                  </div>
+                </div>
+                <div class="dp-add-attachment"><button class="btn-link">Add Attachment</button></div>
+              </div>
+              <div class="dp-separator">DRL details <button class="btn-link">Sequence info</button></div>
+              <div class="dp-section">
+                <div class="dp-section-title">Distribution</div>
+                <div class="dp-grid">
+                  <div class="dp-field">
+                    <span class="dp-label">From organisation</span>
+                    <span class="dp-value" id="detail-originator" data-testid="detail-originator"></span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">Contract</span>
+                    <span class="dp-value" id="detail-contract">C2 EPC - BOP</span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">Submittal Type</span>
+                    <span class="dp-value" id="detail-sub-type">Submittal</span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">To organisation</span>
+                    <span class="dp-value" id="detail-to-org">VGL</span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">Discipline</span>
+                    <span class="dp-value" id="detail-discipline"></span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">Revision</span>
+                    <span class="dp-value" id="detail-revision" data-testid="detail-revision"></span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">Reason for issue</span>
+                    <span class="dp-value" id="detail-reason">For Review</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════════════
+             SCREEN 4: LOAD DATASHEET (spreadsheet style)
+             ════════════════════════════════════════════════════════════ -->
+        <div id="datasheet-screen" class="screen" data-testid="datasheet-screen">
+          <div class="breadcrumb">
+            <a href="#" onclick="navigateTo('todo')">To Do List</a> &raquo;
+            <a href="#" onclick="navigateTo('detail')">Submittal Detail</a> &raquo;
+            Load Datasheet
+          </div>
+          <div class="spreadsheet-wrapper">
+            <table class="spreadsheet-table">
+              <thead>
+                <tr>
+                  <th class="ss-col-green">Action Name</th>
+                  <th class="ss-col-green">Document Number</th>
+                  <th class="ss-col-green">Revision</th>
+                  <th class="ss-col-green">Issue Date</th>
+                  <th class="ss-col-green">Document Title</th>
+                  <th class="ss-col-green">Classification</th>
+                  <th class="ss-col-green">Alt Doc Number</th>
+                  <th class="ss-col-green">Alt Rev Number</th>
+                  <th class="ss-col-green">Issue Purpose</th>
+                  <th class="ss-col-green">File Name</th>
+                  <th class="ss-col-green">Security Class</th>
+                  <th class="ss-col-green">Supplier Name</th>
+                  <th class="ss-col-green">PO Number</th>
+                </tr>
+              </thead>
+              <tbody id="datasheet-spreadsheet-body">
+              </tbody>
+            </table>
+          </div>
+          <div class="compact-card">
+            <div class="compact-card-header">Field Validation</div>
+            <div class="detail-grid" id="datasheet-fields" data-testid="datasheet-fields">
+            </div>
+          </div>
+          <div class="compact-card">
+            <div class="compact-card-header">Validation Results</div>
+            <div id="datasheet-validation" data-testid="datasheet-validation">
+            </div>
+          </div>
+          <div class="action-bar">
+            <button class="btn btn-outline btn-sm" onclick="navigateTo('detail')" data-testid="datasheet-back-btn">
+              Back to Submittal
+            </button>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════════════
+             SCREEN 5: DOCUMENT VIEWER (file selection dialog style)
+             ════════════════════════════════════════════════════════════ -->
+        <div id="docviewer-screen" class="screen" data-testid="docviewer-screen">
+          <div class="breadcrumb">
+            <a href="#" onclick="navigateTo('todo')">To Do List</a> &raquo;
+            <a href="#" onclick="navigateTo('detail')">Submittal Detail</a> &raquo;
+            Document Viewer
+          </div>
+          <div class="file-select-dialog">
+            <div class="file-select-header">Select a file to view</div>
+            <table class="sdx-table compact">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Matching...</th>
+                  <th>Revision</th>
+                  <th>Revision St...</th>
+                  <th>Out of Date</th>
+                  <th>Viewable</th>
+                </tr>
+              </thead>
+              <tbody id="docviewer-file-list">
+                <tr class="selected-row">
+                  <td id="docviewer-filename" data-testid="docviewer-filename"></td>
+                  <td>Document attachment</td>
+                  <td>Yes</td>
+                  <td id="docviewer-rev">—</td>
+                  <td>Current</td>
+                  <td>No</td>
+                  <td><a href="#" class="view-link">View</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="compact-card" style="margin-top:12px;">
+            <div class="compact-card-header">Document Integrity Checks</div>
+            <div id="integrity-checks" data-testid="integrity-checks">
+            </div>
+          </div>
+          <div class="action-bar">
+            <button class="btn btn-outline btn-sm" onclick="navigateTo('detail')" data-testid="docviewer-back-btn">
+              Back to Submittal
+            </button>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════════════
+             SCREEN 6: CREATE INCOMING TRANSMITTAL
+             ════════════════════════════════════════════════════════════ -->
+        <div id="transmittal-screen" class="screen" data-testid="transmittal-screen">
+          <div class="breadcrumb">
+            <a href="#" onclick="navigateTo('todo')">To Do List</a> &raquo;
+            <a href="#" onclick="navigateTo('detail')">Submittal Detail</a> &raquo;
+            Create Incoming Transmittal
+          </div>
+          <div class="transmittal-dialog">
+            <div class="trans-dialog-header">New Create Incoming Transmittal</div>
+            <div class="bottom-panel-tabs">
+              <span class="bp-tab active">DISTRIBUTION</span>
+              <span class="bp-tab">STRUCTURE</span>
+              <span class="bp-tab">HISTORY</span>
+            </div>
+            <div class="trans-form-body">
+              <div class="trans-section">
+                <div class="trans-section-title">Distribution</div>
+                <div class="trans-grid">
+                  <div class="trans-field">
+                    <label>From organisation</label>
+                    <select class="sdx-input" disabled><option>WOR</option></select>
+                  </div>
+                  <div class="trans-field">
+                    <label>From role</label>
+                    <input type="text" class="sdx-input" value="Document Controller" disabled>
+                  </div>
+                  <div class="trans-field">
+                    <label>Contractor Document Code</label>
+                    <input type="text" class="sdx-input" id="trans-docref" data-testid="trans-docref" disabled>
+                  </div>
+                  <div class="trans-field">
+                    <label>From user</label>
+                    <input type="text" class="sdx-input" value="Dabhde, Bhushan" disabled>
+                  </div>
+                  <div class="trans-field">
+                    <label>Contract</label>
+                    <select class="sdx-input" disabled><option>C2 EPC - BOP</option></select>
+                  </div>
+                  <div class="trans-field">
+                    <label>To organisation</label>
+                    <select class="sdx-input" disabled><option>VGL</option></select>
+                  </div>
+                  <div class="trans-field">
+                    <label>To role</label>
+                    <input type="text" class="sdx-input" value="" disabled>
+                  </div>
+                  <div class="trans-field">
+                    <label>To user</label>
+                    <input type="text" class="sdx-input" value="" disabled>
+                  </div>
+                </div>
+                <div class="trans-cc-row">
+                  <label>To CC Users</label>
+                  <button class="btn-link">All</button>
+                </div>
+                <div class="trans-disciplines">
+                  <label>Disciplines</label>
+                  <div class="disc-checks">
+                    <label class="chk-label"><input type="checkbox" disabled checked> Select All</label>
+                    <label class="chk-label"><input type="checkbox" disabled checked> ACC</label>
+                    <label class="chk-label"><input type="checkbox" disabled checked> ADM</label>
+                    <label class="chk-label"><input type="checkbox" disabled checked> AMP</label>
+                    <label class="chk-label"><input type="checkbox" disabled checked> ARC</label>
+                    <label class="chk-label"><input type="checkbox" disabled checked> HSP</label>
+                  </div>
+                </div>
+              </div>
+              <div class="trans-section">
+                <div class="trans-section-title">Details</div>
+                <div class="trans-grid">
+                  <div class="trans-field">
+                    <label>Name (Transmittal Number)</label>
+                    <span class="trans-number-display" id="trans-number" data-testid="trans-number">(Auto-generated)</span>
+                  </div>
+                  <div class="trans-field">
+                    <label>Title</label>
+                    <input type="text" class="sdx-input" value="Incoming Transmittal" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="trans-section">
+                <div class="trans-section-title">Document Details</div>
+                <div class="trans-grid">
+                  <div class="trans-field">
+                    <label>Document Type</label>
+                    <select class="sdx-input" disabled><option>Drawing</option><option>Specification</option><option>Report</option></select>
+                  </div>
+                </div>
+              </div>
+              <div class="trans-section">
+                <div class="trans-section-title">Issue details</div>
+                <div class="trans-grid">
+                  <div class="trans-field">
+                    <label>Reason for Issue</label>
+                    <select class="sdx-input" disabled><option>For Review</option><option>For Approval</option><option>For Information</option><option>For Construction</option></select>
+                  </div>
+                  <div class="trans-field">
+                    <label>Details</label>
+                    <textarea class="sdx-input" rows="2" disabled>Incoming document transmittal</textarea>
+                  </div>
+                  <div class="trans-field">
+                    <label>Date</label>
+                    <span class="dp-value" id="trans-date" data-testid="trans-date"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="trans-collapsible">
+                <div class="trans-collapse-header">&#9654; Security Details</div>
+              </div>
+              <div class="trans-collapsible">
+                <div class="trans-collapse-header">&#9654; Owning group</div>
+              </div>
+              <div class="trans-collapsible">
+                <div class="trans-collapse-header">&#9654; Type Specific Details</div>
+              </div>
+            </div>
+            <div class="trans-dialog-footer">
+              <button class="btn btn-outline btn-sm" onclick="navigateTo('detail')" data-testid="transmittal-back-btn">CANCEL</button>
+              <button class="btn btn-outline btn-sm" disabled>APPLY</button>
+              <button class="btn btn-primary btn-sm" id="generate-transmittal-btn" onclick="generateTransmittal()" data-testid="generate-transmittal-btn">FINISH</button>
+            </div>
+          </div>
+          <div id="transmittal-success" style="display:none;margin-top:12px;" data-testid="transmittal-success">
+            <div class="success-banner">
+              <strong>Transmittal created successfully.</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════════════
+             SCREEN 7: APPROVE SUBMITTAL
+             ════════════════════════════════════════════════════════════ -->
+        <div id="approve-screen" class="screen" data-testid="approve-screen">
+          <div class="breadcrumb">
+            <a href="#" onclick="navigateTo('todo')">To Do List</a> &raquo;
+            <a href="#" onclick="navigateTo('detail')">Submittal Detail</a> &raquo;
+            Approve Submittal
+          </div>
+          <div class="sdx-dialog">
+            <div class="sdx-dialog-header">Approve Submittal</div>
+            <div class="sdx-dialog-body">
+              <div class="bottom-panel-tabs">
+                <span class="bp-tab active">DETAILS</span>
+                <span class="bp-tab">HISTORY</span>
+              </div>
+              <div class="dp-section" style="padding:16px;">
+                <div class="dp-grid">
+                  <div class="dp-field">
+                    <span class="dp-label">Document</span>
+                    <span class="dp-value" id="approve-docnum"></span>
+                  </div>
+                  <div class="dp-field">
+                    <span class="dp-label">Current Status</span>
+                    <span class="dp-value" id="approve-status">In Review</span>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:12px;">
+                  <label for="approve-revision">Revision Number</label>
+                  <input type="text" id="approve-revision" data-testid="approve-revision-input" class="sdx-input" placeholder="Enter revision number">
+                </div>
+              </div>
+            </div>
+            <div class="sdx-dialog-footer">
+              <button class="btn btn-outline btn-sm" onclick="navigateTo('detail')" data-testid="approve-back-btn">Cancel</button>
+              <button class="btn btn-primary btn-sm" onclick="doApprove()" data-testid="approve-confirm-btn">Approve</button>
+            </div>
+          </div>
+          <div id="approve-success" style="display:none;margin-top:12px;" data-testid="approve-success">
+            <div class="success-banner">
+              <strong>Submittal approved successfully.</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════════════
+             SCREEN 8: COMPLETE / BOT REVIEWED
+             ════════════════════════════════════════════════════════════ -->
+        <div id="final-screen" class="screen" data-testid="final-screen">
+          <div class="breadcrumb">
+            <a href="#" onclick="navigateTo('todo')">To Do List</a> &raquo;
+            <a href="#" onclick="navigateTo('detail')">Submittal Detail</a> &raquo;
+            Final Status
+          </div>
+          <div class="sdx-dialog">
+            <div class="sdx-dialog-header">Set Final Status</div>
+            <div class="sdx-dialog-body">
+              <div class="bottom-panel-tabs">
+                <span class="bp-tab active">DETAILS</span>
+              </div>
+              <div class="dp-section" style="padding:16px;">
+                <div class="dp-field">
+                  <span class="dp-label">Document</span>
+                  <span class="dp-value" id="final-docnum" data-testid="final-docnum"></span>
+                </div>
+                <p class="final-note">
+                  Select the final status for this submittal. The bot should select
+                  "Bot Reviewed" and stop. A human DC must click "Complete".
+                </p>
+                <div class="status-buttons">
+                  <button class="btn btn-primary btn-sm" onclick="setBotReviewed()" data-testid="bot-reviewed-btn">
+                    Bot Reviewed
+                  </button>
+                  <button class="btn btn-outline btn-sm" disabled data-testid="complete-btn" title="Reserved for manual DC action">
+                    Complete (Manual Only)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="final-success" style="display:none;margin-top:12px;" data-testid="final-success">
+            <div class="success-banner">
+              <strong>Status set to Bot Reviewed. Manual review required before completion.</strong>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

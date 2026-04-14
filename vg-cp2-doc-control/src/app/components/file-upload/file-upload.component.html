@@ -1,0 +1,152 @@
+<div class="file-upload-panel">
+  <!-- Hidden inputs -->
+  <input #fileInput type="file" multiple
+         accept=".pdf,.doc,.docx,.xls,.xlsx,.dwg,.txt"
+         (change)="onFileSelect($event)" style="display:none" />
+  <input #csvInput type="file" accept=".csv"
+         (change)="onCsvSelect($event)" style="display:none" />
+
+  <!-- Tabs -->
+  <div class="fu-tabs">
+    <span class="fu-tab" [class.active]="activeTab === 'files'" (click)="activeTab = 'files'">
+      FILES ({{ ingestion.uploadedFiles().length }})
+    </span>
+    <span class="fu-tab" [class.active]="activeTab === 'loadsheet'" (click)="activeTab = 'loadsheet'">
+      LOAD SHEET ({{ ingestion.loadSheetRows().length }})
+    </span>
+    <span class="fu-tab" [class.active]="activeTab === 'validation'" (click)="activeTab = 'validation'">
+      VALIDATION
+      <span class="fu-tab-badge error" *ngIf="validationSummary.errors > 0">{{ validationSummary.errors }}</span>
+      <span class="fu-tab-badge warn" *ngIf="validationSummary.warnings > 0 && validationSummary.errors === 0">{{ validationSummary.warnings }}</span>
+    </span>
+    <div class="fu-tab-actions">
+      <button class="fu-btn secondary" (click)="clearAll()" *ngIf="ingestion.uploadedFiles().length > 0">Clear All</button>
+      <button class="fu-btn primary" (click)="onProcess()" [disabled]="!canProcess">
+        Process {{ ingestion.loadSheetRows().length }} Documents
+      </button>
+    </div>
+  </div>
+
+  <!-- FILES TAB -->
+  <div class="fu-body" *ngIf="activeTab === 'files'">
+    <!-- Drop Zone -->
+    <div class="drop-zone"
+         [class.drag-over]="isDragOver"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)"
+         (click)="openFileDialog()">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <rect x="4" y="8" width="28" height="22" rx="3" stroke="#aaa" stroke-width="1.5" fill="none"/>
+        <path d="M18 14v10M14 18h8" stroke="#aaa" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="drop-text">Drag & drop document files here</span>
+      <span class="drop-hint">or click to browse · PDF, DOC, DOCX, XLS, XLSX, DWG, TXT</span>
+    </div>
+
+    <!-- CSV Load Sheet Upload -->
+    <div class="csv-upload-row">
+      <button class="fu-btn csv-btn" (click)="openCsvDialog()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/>
+          <path d="M4 5h6M4 7h6M4 9h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+        {{ loadSheetFile ? 'Replace' : 'Upload' }} CSV Load Sheet
+      </button>
+      <span class="csv-status ok" *ngIf="loadSheetFile && !loadSheetError">
+        {{ loadSheetFile.name }} · {{ ingestion.loadSheetRows().length }} rows
+      </span>
+      <span class="csv-status error" *ngIf="loadSheetError">
+        {{ loadSheetError }}
+      </span>
+    </div>
+
+    <!-- Uploaded Files List -->
+    <div class="file-list" *ngIf="ingestion.uploadedFiles().length > 0">
+      <div class="file-item" *ngFor="let f of ingestion.uploadedFiles()">
+        <span class="file-type-badge" [ngClass]="fileIcon(f.type).toLowerCase()">{{ fileIcon(f.type) }}</span>
+        <span class="file-name">{{ f.name }}</span>
+        <span class="file-size">{{ formatSize(f.size) }}</span>
+        <span class="file-status" [ngClass]="f.status">
+          {{ f.status === 'extracted' ? 'Ready' : f.status === 'error' ? 'Error' : 'Pending' }}
+        </span>
+        <button class="file-remove" (click)="removeFile(f.name)" title="Remove">&times;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOAD SHEET TAB -->
+  <div class="fu-body" *ngIf="activeTab === 'loadsheet'">
+    <div class="ls-table-wrap" *ngIf="ingestion.loadSheetRows().length > 0">
+      <table class="ls-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Document Number</th>
+            <th>File Name</th>
+            <th>Title</th>
+            <th>Rev</th>
+            <th>Issue Purpose</th>
+            <th>Security</th>
+            <th>Type</th>
+            <th>Discipline</th>
+            <th>Contract</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of ingestion.loadSheetRows()">
+            <td>{{ row.rowIndex }}</td>
+            <td class="ls-doc-num">{{ row.documentNumber }}</td>
+            <td>{{ row.fileName }}</td>
+            <td class="ls-title">{{ row.documentTitle }}</td>
+            <td>{{ row.revision }}</td>
+            <td>{{ row.issuePurpose }}</td>
+            <td>{{ row.securityClassification }}</td>
+            <td>{{ row.documentType }}</td>
+            <td>{{ row.disciplineCode }}</td>
+            <td>{{ row.contractNumber }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="fu-empty" *ngIf="ingestion.loadSheetRows().length === 0">
+      Upload a CSV load sheet to see parsed rows
+    </div>
+  </div>
+
+  <!-- VALIDATION TAB -->
+  <div class="fu-body" *ngIf="activeTab === 'validation'">
+    <div class="val-summary" *ngIf="ingestion.loadSheetValidation().length > 0">
+      <span class="val-stat valid">{{ validationSummary.valid }} Valid</span>
+      <span class="val-stat errors" *ngIf="validationSummary.errors > 0">{{ validationSummary.errors }} Errors</span>
+      <span class="val-stat warnings" *ngIf="validationSummary.warnings > 0">{{ validationSummary.warnings }} Warnings</span>
+    </div>
+
+    <div class="val-list" *ngIf="ingestion.loadSheetValidation().length > 0">
+      <div class="val-item" *ngFor="let result of ingestion.loadSheetValidation()"
+           [class.val-error]="!result.isValid"
+           [class.val-warn]="result.isValid && result.warnings.length > 0"
+           [class.val-ok]="result.isValid && result.warnings.length === 0">
+        <div class="val-item-header">
+          <span class="val-doc">{{ result.row.documentNumber || result.row.fileName }}</span>
+          <span class="val-badge ok" *ngIf="result.isValid && result.warnings.length === 0">PASS</span>
+          <span class="val-badge warn" *ngIf="result.isValid && result.warnings.length > 0">WARN ({{ result.warnings.length }})</span>
+          <span class="val-badge error" *ngIf="!result.isValid">FAIL ({{ result.errors.length }})</span>
+        </div>
+        <div class="val-details" *ngIf="result.errors.length > 0 || result.warnings.length > 0">
+          <div class="val-msg error" *ngFor="let err of result.errors">
+            <span class="val-icon">&#10007;</span>
+            <span class="val-field">[{{ err.rule }}]</span> {{ err.message }}
+          </div>
+          <div class="val-msg warn" *ngFor="let warn of result.warnings">
+            <span class="val-icon">&#9888;</span>
+            <span class="val-field">[{{ warn.rule }}]</span> {{ warn.message }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fu-empty" *ngIf="ingestion.loadSheetValidation().length === 0">
+      Upload files and a load sheet to see validation results
+    </div>
+  </div>
+</div>

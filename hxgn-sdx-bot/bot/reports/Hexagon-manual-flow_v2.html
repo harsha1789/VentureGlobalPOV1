@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document Submittal Flow - Swimlane</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; display: flex; justify-content: center; padding: 20px; }
+  .page { width: 1400px; }
+
+  .hdr { background: linear-gradient(135deg, #003b5c, #005f8a); color: #fff; padding: 18px 30px; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; align-items: center; }
+  .hdr h1 { font-size: 26px; }
+
+  .bd { background: #fff; border-radius: 0 0 10px 10px; padding: 22px 22px 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+  /* Phase strip */
+  .phases { display: grid; grid-template-columns: 160px repeat(6, 1fr); gap: 0; margin-bottom: 6px; }
+  .ph-cell { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #003b5c; text-align: center; padding: 8px 4px; border-bottom: 3px solid #003b5c; }
+  .ph-cell.empty { border-bottom: none; }
+
+  /* Swimlane grid */
+  .lane { display: grid; grid-template-columns: 160px repeat(6, 1fr); min-height: 160px; border-bottom: 1px dashed #dfe3ea; position: relative; }
+  .lane:last-child { border-bottom: none; }
+  .lane-label { background: #f7f9fc; border-right: 4px solid #003b5c; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: #003b5c; text-align: center; padding: 10px; line-height: 1.3; }
+  .lane-label.dc { border-right-color: #1565c0; color: #0d3a66; }
+  .lane-label.eng { border-right-color: #00695c; color: #004d40; }
+  .lane-label.orig { border-right-color: #6a1b9a; color: #4a0072; }
+
+  .slot { display: flex; align-items: center; justify-content: center; padding: 10px 6px; position: relative; }
+  .slot.multi { gap: 10px; }
+
+  .node { display: flex; flex-direction: column; align-items: center; width: 120px; text-align: center; z-index: 2; }
+  .node .d { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.18); }
+  .node .t { font-size: 13px; color: #222; font-weight: 600; line-height: 1.3; margin-top: 7px; }
+
+  .cb { background: #1565c0; }
+  .cg { background: #2e7d32; }
+  .co { background: #e65100; }
+  .cp { background: #6a1b9a; }
+  .ct { background: #00695c; }
+  .ck { background: #455a64; }
+
+  /* SVG overlay for arrows */
+  .flow-wrap { position: relative; }
+  svg.flow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+  .sub { text-align: center; font-size: 13px; color: #666; margin-top: 10px; font-style: italic; }
+  .legend { display: flex; justify-content: center; gap: 22px; margin-top: 14px; font-size: 13px; color: #333; font-weight: 600; flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hdr">
+    <h1>Document Submittal Flow &mdash; Swimlane</h1>
+  </div>
+  <div class="bd">
+
+    <!-- Phase header -->
+    <div class="phases">
+      <div class="ph-cell empty"></div>
+      <div class="ph-cell">Submission</div>
+      <div class="ph-cell">Review</div>
+      <div class="ph-cell">Transmittal</div>
+      <div class="ph-cell">Distribution</div>
+      <div class="ph-cell">Engineer Review</div>
+      <div class="ph-cell">Closure</div>
+    </div>
+
+    <div class="flow-wrap">
+      <!-- Originator lane -->
+      <div class="lane">
+        <div class="lane-label orig">Originator</div>
+        <div class="slot">
+          <div class="node"><div class="d cp">1</div><div class="t">Upload Submittal</div></div>
+        </div>
+        <div class="slot"></div>
+        <div class="slot"></div>
+        <div class="slot"></div>
+        <div class="slot"></div>
+        <div class="slot"></div>
+      </div>
+
+      <!-- Document Controller lane -->
+      <div class="lane">
+        <div class="lane-label dc">Document<br>Controller</div>
+        <div class="slot">
+          <div class="node"><div class="d cb">2</div><div class="t">Claim Submittal</div></div>
+        </div>
+        <div class="slot">
+          <div class="node"><div class="d cg">3</div><div class="t">Review Submittal</div></div>
+        </div>
+        <div class="slot multi">
+          <div class="node"><div class="d co">4</div><div class="t">Create Incoming Transmittal</div></div>
+          <div class="node"><div class="d co">5</div><div class="t">Generate Transmittal</div></div>
+          <div class="node"><div class="d co">6</div><div class="t">Approve / Reject</div></div>
+          <div class="node"><div class="d co">7</div><div class="t">Complete Transmittal</div></div>
+        </div>
+        <div class="slot multi">
+          <div class="node"><div class="d cp">8</div><div class="t">Email Notification</div></div>
+          <div class="node"><div class="d cp">9</div><div class="t">Distribution Matrix</div></div>
+        </div>
+        <div class="slot"></div>
+        <div class="slot">
+          <div class="node"><div class="d ck">13</div><div class="t">Publish &amp; Send to Document Controller</div></div>
+        </div>
+      </div>
+
+      <!-- Engineer lane -->
+      <div class="lane">
+        <div class="lane-label eng">Engineer /<br>Reviewer</div>
+        <div class="slot"></div>
+        <div class="slot"></div>
+        <div class="slot"></div>
+        <div class="slot"></div>
+        <div class="slot multi">
+          <div class="node"><div class="d ct">10</div><div class="t">Engineer Review</div></div>
+          <div class="node"><div class="d ct">11</div><div class="t">Consolidation</div></div>
+          <div class="node"><div class="d ct">12</div><div class="t">Accept / Reject</div></div>
+        </div>
+        <div class="slot"></div>
+      </div>
+
+      <!-- Arrow overlay (viewBox proportional to layout: width ~1356, 3 lanes * 160 = 480 tall) -->
+      <svg class="flow" viewBox="0 0 1356 480" preserveAspectRatio="none">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6d7b90"/>
+          </marker>
+          <marker id="arrDark" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#455a64"/>
+          </marker>
+        </defs>
+        <!-- Lane Y centers: orig ~80, dc ~240, eng ~400. Column centers (with 160px label): col widths ~199 -->
+        <!-- 1 -> 2 (vertical) -->
+        <path d="M 260 110 L 260 215" stroke="#6d7b90" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+        <!-- 2 -> 3 -->
+        <path d="M 320 240 L 420 240" stroke="#6d7b90" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+        <!-- 3 -> 4 -->
+        <path d="M 530 240 L 605 240" stroke="#6d7b90" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+        <!-- 4->5 -->
+        <path d="M 710 240 L 730 240" stroke="#6d7b90" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+        <!-- 5->6 -->
+        <path d="M 830 240 L 850 240" stroke="#6d7b90" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+        <!-- 6->7 -->
+        <path d="M 950 240 L 970 240" stroke="#6d7b90" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+        <!-- 7 -> 8 -->
+        <path d="M 1060 240 L 1085 240" stroke="#6d7b90" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+        <!-- 8 -> 9 -->
+        <path d="M 1130 240 L 1155 240" stroke="#6d7b90" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+        <!-- 9 (DC) -> 10 (Eng): curve down and left -->
+        <path d="M 1195 275 C 1210 340, 995 340, 995 370" stroke="#6d7b90" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+        <!-- 10->11 -->
+        <path d="M 1035 400 L 1055 400" stroke="#6d7b90" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+        <!-- 11->12 -->
+        <path d="M 1120 400 L 1140 400" stroke="#6d7b90" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+        <!-- 12 (Eng) -> 13 (DC Closure): curve up and right -->
+        <path d="M 1200 400 C 1290 400, 1300 275, 1300 260" stroke="#455a64" stroke-width="2.4" fill="none" marker-end="url(#arrDark)"/>
+      </svg>
+    </div>
+
+    <div class="sub">Step 3: Metadata + Document Integrity + OCR &bull; Steps 10&ndash;12: Markups + Technical Content &bull; Step 13 returns to Document Controller for final publication</div>
+
+    <div class="legend">
+      <span><i style="background:#6a1b9a"></i>Originator</span>
+      <span><i style="background:#1565c0"></i>Claim</span>
+      <span><i style="background:#2e7d32"></i>Review</span>
+      <span><i style="background:#e65100"></i>Transmittal</span>
+      <span><i style="background:#6a1b9a"></i>Distribution</span>
+      <span><i style="background:#00695c"></i>Engineer</span>
+      <span><i style="background:#455a64"></i>Closure</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

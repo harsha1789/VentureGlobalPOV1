@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HxGN SDx Bot Execution Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; padding: 32px; color: #333; }
+    .report { max-width: 960px; margin: 0 auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+    .header { background: #003b5c; color: #fff; padding: 24px 32px; }
+    .header h1 { font-size: 22px; margin-bottom: 4px; }
+    .header .sub { font-size: 14px; opacity: 0.8; }
+    .meta { padding: 20px 32px; background: #f0f4f8; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 14px; }
+    .meta .label { font-weight: 600; color: #666; }
+    .content { padding: 24px 32px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th { background: #003b5c; color: #fff; padding: 10px 14px; text-align: left; font-size: 13px; text-transform: uppercase; }
+    td { padding: 10px 14px; border-bottom: 1px solid #e0e0e0; font-size: 14px; }
+    tr:hover { background: #f9f9f9; }
+    .pass { color: #2e7d32; font-weight: 700; }
+    .fail { color: #c62828; font-weight: 700; }
+    .footer { padding: 20px 32px; background: #f0f4f8; border-top: 2px solid #003b5c; font-size: 14px; }
+    .footer .final-status { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .footer .final-status.ok { color: #2e7d32; }
+    .footer .final-status.err { color: #c62828; }
+    a { color: #00a3e0; }
+  </style>
+</head>
+<body>
+  <div class="report">
+    <div class="header">
+      <h1>HxGN SDx Bot Execution Report</h1>
+      <div class="sub">Venture Global CP2 LNG — Document Control Automation</div>
+    </div>
+    <div class="meta">
+      <div><span class="label">Run Date & Time:</span> 9/4/2026, 12:20:53 pm</div>
+      <div><span class="label">Duration:</span> 32.8s</div>
+      <div><span class="label">Bot User:</span> dc_bot</div>
+      <div><span class="label">Document Processed:</span> VG-CP2-MEC-DWG-0001, VG-CP2-ELE-SPC-0042, VG-CP2-PIP-DWG-0112, VG-CP2-CIV-CAL-0037, VG-CP2-PRO-PID-0044</div>
+    </div>
+    <div class="content">
+      <h2 style="font-size:18px;color:#003b5c;margin-bottom:8px;">Execution Summary</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Step</th><th>Status</th><th>Notes</th><th>Screenshot</th></tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>1</td>
+        <td>Login</td>
+        <td class="pass">PASS</td>
+        <td>Logged in as dc_bot</td>
+        <td><a href="../screenshots/step01-login.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Identify Document in To Do List</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-MEC-DWG-0001] Claimed VG-CP2-MEC-DWG-0001</td>
+        <td><a href="../screenshots/doc01-claim.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Claim Submittal</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-MEC-DWG-0001] DocNum=VG-CP2-MEC-DWG-0001, Rev=A, Type=PDF</td>
+        <td><a href="../screenshots/doc01-datasheet.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Validate Submittal Detail Screen</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-MEC-DWG-0001] </td>
+        <td><a href="../screenshots/doc01-detail.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Open Load Datasheet</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-MEC-DWG-0001] Document Number: PASS (VG-CP2-MEC-DWG-0001); Title: PASS (Mechanical Equipment Layout — Train 1); Revision: PASS (A); File Type: PASS (PDF); Discipline: PASS (Mechanical)</td>
+        <td><a href="../screenshots/doc01-FAIL.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Validate Datasheet Fields</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-MEC-DWG-0001] File: VG-CP2-MEC-DWG-0001_RevA.pdf, 23 checks passed</td>
+        <td><a href="../screenshots/doc01-final.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Document Integrity Check</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-MEC-DWG-0001] Transmittal: TR-CP2-MNR4BUBE</td>
+        <td><a href="../screenshots/doc01-integrity.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Create Incoming Transmittal</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-MEC-DWG-0001] Revision: A</td>
+        <td><a href="../screenshots/doc01-transmittal.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Approve Submittal</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-MEC-DWG-0001] Stopped before Complete</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>Set Bot Reviewed Status</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-ELE-SPC-0042] Claimed VG-CP2-ELE-SPC-0042</td>
+        <td><a href="../screenshots/doc02-claim.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-ELE-SPC-0042] DocNum=VG-CP2-ELE-SPC-0042, Rev=B, Type=PDF</td>
+        <td><a href="../screenshots/doc02-datasheet.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-ELE-SPC-0042] </td>
+        <td><a href="../screenshots/doc02-detail.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-ELE-SPC-0042] Document Number: PASS (VG-CP2-ELE-SPC-0042); Title: PASS (Electrical Single Line Diagram — Substation B); Revision: PASS (B); File Type: PASS (PDF); Discipline: PASS (Electrical)</td>
+        <td><a href="../screenshots/doc02-FAIL.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>14</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-ELE-SPC-0042] File: VG-CP2-ELE-SPC-0042_RevB.pdf, 23 checks passed</td>
+        <td><a href="../screenshots/doc02-final.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>15</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-ELE-SPC-0042] Transmittal: TR-CP2-MNR4BZVU</td>
+        <td><a href="../screenshots/doc02-integrity.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>16</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-ELE-SPC-0042] Revision: A</td>
+        <td><a href="../screenshots/doc02-transmittal.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>17</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-ELE-SPC-0042] Stopped before Complete</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>18</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-PIP-DWG-0112] Claimed VG-CP2-PIP-DWG-0112</td>
+        <td><a href="../screenshots/doc03-claim.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>19</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-PIP-DWG-0112] DocNum=VG-CP2-PIP-DWG-0112, Rev=A, Type=PDF</td>
+        <td><a href="../screenshots/doc03-datasheet.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-PIP-DWG-0112] </td>
+        <td><a href="../screenshots/doc03-detail.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-PIP-DWG-0112] Document Number: PASS (VG-CP2-PIP-DWG-0112); Title: PASS (Piping Isometric — Scanned Drawing Area 400); Revision: PASS (A); File Type: PASS (PDF); Discipline: PASS (Piping)</td>
+        <td><a href="../screenshots/doc03-FAIL.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>22</td>
+        <td>undefined</td>
+        <td class="fail">FAIL</td>
+        <td>[VG-CP2-PIP-DWG-0112] Document quality check failed: [object Promise]: FAIL (No text content — image-only or scanned document. OCR data found but text is not searchable); [object Promise]: FAIL (Metadata may not appear on all pages); [object Promise]: FAIL (Security classification missing or invalid); [object Promise]: FAIL (Revision history missing); [object Promise]: FAIL (Sections: No | Signatures: No | Rev History: No); [object Promise]: FAIL (No contract reference found); [object Promise]: FAIL (No end marker — file may be truncated); [object Promise]: FAIL (Second cover page not detected); [object Promise]: FAIL (Security classification not found in document — required field); [object Promise]: FAIL (Issue purpose not found in document — required field); [object Promise]: FAIL (Missing fields for transmittal: contractNumber, title, revision, issuePurpose, securityClassification, documentType, discipline, fromOrganisation); [object Promise]: FAIL; [object Promise]: FAIL; [object Promise]: FAIL; [object Promise]: FAIL; [object Promise]: FAIL; [object Promise]: FAIL; [object Promise]: FAIL; [object Promise]: FAIL</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>23</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-CIV-CAL-0037] Claimed VG-CP2-CIV-CAL-0037</td>
+        <td><a href="../screenshots/doc04-claim.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>24</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-CIV-CAL-0037] DocNum=VG-CP2-CIV-CAL-0037, Rev=A, Type=PDF</td>
+        <td><a href="../screenshots/doc04-datasheet.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>25</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-CIV-CAL-0037] </td>
+        <td><a href="../screenshots/doc04-detail.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>26</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-CIV-CAL-0037] Document Number: PASS (VG-CP2-CIV-CAL-0037); Title: PASS (Foundation Loading Analysis — Area 300); Revision: PASS (A); File Type: PASS (PDF); Discipline: PASS (Civil)</td>
+        <td><a href="../screenshots/doc04-FAIL.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>27</td>
+        <td>undefined</td>
+        <td class="fail">FAIL</td>
+        <td>[VG-CP2-CIV-CAL-0037] Document quality check failed: [object Promise]: FAIL (Annotation or markup indicators detected in document)</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>28</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-PRO-PID-0044] Claimed VG-CP2-PRO-PID-0044</td>
+        <td><a href="../screenshots/doc05-claim.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>29</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-PRO-PID-0044] DocNum=VG-CP2-PRO-PID-0044, Rev=0, Type=PDF</td>
+        <td><a href="../screenshots/doc05-datasheet.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>30</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-PRO-PID-0044] </td>
+        <td><a href="../screenshots/doc05-detail.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>31</td>
+        <td>undefined</td>
+        <td class="pass">PASS</td>
+        <td>[VG-CP2-PRO-PID-0044] Document Number: PASS (VG-CP2-PRO-PID-0044); Title: PASS (P&ID — Condensate Recovery Unit); Revision: PASS (0); File Type: PASS (PDF); Discipline: PASS (Process)</td>
+        <td><a href="../screenshots/doc05-FAIL.png" target="_blank">View</a></td>
+      </tr>
+      <tr>
+        <td>32</td>
+        <td>undefined</td>
+        <td class="fail">FAIL</td>
+        <td>[VG-CP2-PRO-PID-0044] Document quality check failed: [object Promise]: FAIL (DRAFT or NOT FOR CONSTRUCTION marker detected); [object Promise]: FAIL (Non-ASCII character ratio suggests encoding or orientation issue); [object Promise]: FAIL (Metadata may not appear on all pages); [object Promise]: FAIL (Security classification missing or invalid); [object Promise]: FAIL (Sections: No | Signatures: Yes | Rev History: Yes); [object Promise]: FAIL (Document submitted under wrong contract/project); [object Promise]: FAIL (Rev 0 cannot be AFC (Approved for Construction)); [object Promise]: FAIL (No end marker — file may be truncated); [object Promise]: FAIL (Second cover page not detected); [object Promise]: FAIL (Security classification not found in document — required field); [object Promise]: FAIL (Missing fields for transmittal: contractNumber, securityClassification); [object Promise]: FAIL; [object Promise]: FAIL</td>
+        <td>—</td>
+      </tr></tbody>
+      </table>
+    </div>
+    <div class="footer">
+      <div class="final-status err">
+        Final Status: FAILED — Stopped at error &#10007;
+      </div>
+      <div>Next Action: Investigate failure and re-run</div>
+    </div>
+  </div>
+</body>
+</html>

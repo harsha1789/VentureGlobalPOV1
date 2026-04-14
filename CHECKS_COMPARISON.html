@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playwright Bot vs AI Validation Checks - VG CP2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #c62828 100%);
+            color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            page-break-after: avoid;
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            background: #1e3a5f;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-left: 4px solid #c62828;
+            page-break-after: avoid;
+        }
+        
+        .subsection-title {
+            background: #eef2ff;
+            color: #1e3a5f;
+            padding: 12px 15px;
+            font-size: 15px;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+            border-left: 3px solid #6b7280;
+            page-break-after: avoid;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            page-break-inside: avoid;
+        }
+        
+        thead {
+            background: #1e3a5f;
+            color: white;
+            page-break-after: avoid;
+        }
+        
+        th {
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #c62828;
+        }
+        
+        td {
+            padding: 12px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            vertical-align: top;
+        }
+        
+        tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        
+        tbody tr:hover {
+            background: #f0f4ff;
+        }
+        
+        .check-num {
+            font-weight: 600;
+            color: #1e3a5f;
+            width: 5%;
+        }
+        
+        .method-cell {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .pass {
+            color: #16a34a;
+            font-weight: 600;
+        }
+        
+        .fail {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        
+        .checkmark {
+            color: #16a34a;
+            font-size: 18px;
+        }
+        
+        .cross {
+            color: #dc2626;
+            font-size: 18px;
+        }
+        
+        .summary-table {
+            background: #f8fbff;
+            border: 2px solid #c62828;
+        }
+        
+        .summary-table tr {
+            border-bottom: 1px solid #c62828;
+        }
+        
+        .total-row {
+            background: #1e3a5f;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .total-row td {
+            border-bottom: 2px solid #c62828;
+        }
+        
+        .comparison-table {
+            margin-top: 20px;
+        }
+        
+        .coverage-100 {
+            background: #dcfce7;
+            color: #166534;
+            font-weight: 600;
+        }
+        
+        .coverage-partial {
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 600;
+        }
+        
+        .coverage-ai {
+            background: #dbeafe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            page-break-before: avoid;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            page-break-inside: avoid;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+        
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                max-width: 100%;
+                margin: 0;
+                padding: 10mm;
+                box-shadow: none;
+            }
+            header {
+                page-break-after: avoid;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+            table {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Playwright Bot vs AI Validation Checks</h1>
+            <p>Comprehensive Comparison of Automated Checks for VG CP2 Document Control</p>
+            <p style="margin-top: 10px; opacity: 0.9;">Venture Global LNG • April 13, 2026</p>
+        </header>
+
+        <!-- QUICK SUMMARY -->
+        <div class="section">
+            <div class="section-title">Quick Summary</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>System</th>
+                        <th>Type</th>
+                        <th>Coverage</th>
+                        <th>Speed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Playwright Bot</strong></td>
+                        <td>UI Automation</td>
+                        <td>Human-like workflow on Hexagon SDx portal</td>
+                        <td>~2-3 min/doc</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Angular AI</strong></td>
+                        <td>Rules Engine + NLP</td>
+                        <td>Document content analysis + metadata extraction</td>
+                        <td>~1-2 sec/tier</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PLAYWRIGHT BOT CHECKS -->
+        <div class="section">
+            <div class="section-title">Part 1: Playwright Bot Checks (Hexagon SDx UI Automation)</div>
+
+            <div class="subsection-title">Step 1: Login</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Check</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>User authentication</td>
+                        <td>Portal login form</td>
+                        <td>Valid credentials accepted</td>
+                    </tr>
+                    <tr>
+                        <td>Session established</td>
+                        <td>Cookie/token check</td>
+                        <td>Session active</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="subsection-title">Step 2: Identify First Document</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Check</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Queue accessible</td>
+                        <td>Page load</td>
+                        <td>To Do List visible</td>
+                    </tr>
+                    <tr>
+                        <td>Document list renders</td>
+                        <td>DOM selector</td>
+                        <td>First submittal found in grid</td>
+                    </tr>
+                    <tr>
+                        <td>Document status visible</td>
+                        <td>Text extraction</td>
+                        <td>Status field populated</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="subsection-title">Step 3: Claim Document</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Check</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Document claimable</td>
+                        <td>Button click</td>
+                        <td>Claim action succeeds</td>
+                    </tr>
+                    <tr>
+                        <td>Status updated</td>
+                        <td>Portal refresh</td>
+                        <td>Status changes to "In Review"</td>
+                    </tr>
+                    <tr>
+                        <td>Claimant recorded</td>
+                        <td>API call</td>
+                        <td>Operator name captured</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="subsection-title">Step 4: Validate Submittal Detail Fields</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Check</th>
+                        <th>Method / Selector</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="check-num">1</td>
+                        <td>Document Number populated</td>
+                        <td class="method-cell">[data-testid="detail-docnum"]</td>
+                        <td>Non-empty, valid format</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">2</td>
+                        <td>Revision populated</td>
+                        <td class="method-cell">[data-testid="detail-revision"]</td>
+                        <td>Non-empty</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">3</td>
+                        <td>File Type populated</td>
+                        <td class="method-cell">[data-testid="detail-filetype"]</td>
+                        <td>Equals "PDF"</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">4</td>
+                        <td>Originator populated</td>
+                        <td class="method-cell">[data-testid="detail-originator"]</td>
+                        <td>Non-empty</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">5</td>
+                        <td>Submit Date populated</td>
+                        <td class="method-cell">[data-testid="detail-date"]</td>
+                        <td>Valid date format</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="subsection-title">Step 5: Open Load Datasheet</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Check</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Datasheet tab clickable</td>
+                        <td>Button click</td>
+                        <td>Datasheet screen loads</td>
+                    </tr>
+                    <tr>
+                        <td>Datasheet visible</td>
+                        <td>DOM selector</td>
+                        <td>Table/form appears</td>
+                    </tr>
+                    <tr>
+                        <td>Fields accessible</td>
+                        <td>page.locator()</td>
+                        <td>All expected fields present</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="subsection-title">Step 6: Validate Load Datasheet Fields</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Check</th>
+                        <th>Selector</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="check-num">1</td>
+                        <td>Document Number validation</td>
+                        <td class="method-cell">ds-validation-status-documentNumber</td>
+                        <td>Status = "PASS"</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">2</td>
+                        <td>Title validation</td>
+                        <td class="method-cell">ds-validation-status-title</td>
+                        <td>Status = "PASS"</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">3</td>
+                        <td>Revision validation</td>
+                        <td class="method-cell">ds-validation-status-revision</td>
+                        <td>Status = "PASS"</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">4</td>
+                        <td>File Type validation</td>
+                        <td class="method-cell">ds-validation-status-fileType</td>
+                        <td>Status = "PASS"</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">5</td>
+                        <td>Discipline validation</td>
+                        <td class="method-cell">ds-validation-status-discipline</td>
+                        <td>Status = "PASS"</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="subsection-title">Step 7: Document Integrity</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Check</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="check-num">1</td>
+                        <td>Document viewer opens</td>
+                        <td>Page click + wait</td>
+                        <td>Viewer screen visible</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">2</td>
+                        <td>File name displayed</td>
+                        <td class="method-cell">docviewer-filename</td>
+                        <td>Non-empty filename</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">3</td>
+                        <td>Basic integrity check 1</td>
+                        <td class="method-cell">integrity-status-0</td>
+                        <td>Status = "PASS"</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">4</td>
+                        <td>Basic integrity check 2</td>
+                        <td class="method-cell">integrity-status-1</td>
+                        <td>Status = "PASS"</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">5</td>
+                        <td>Basic integrity check 3</td>
+                        <td class="method-cell">integrity-status-2</td>
+                        <td>Status = "PASS"</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">6</td>
+                        <td>Quality checks (API)</td>
+                        <td>API fetch</td>
+                        <td>All quality checks pass</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">7</td>
+                        <td>Cross-validation (API)</td>
+                        <td>API fetch</td>
+                        <td>No blocking issues</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="subsection-title">Steps 8-10: Transmittal & Approval</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Step</th>
+                        <th>Check</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>8</td>
+                        <td>Transmittal screen loads</td>
+                        <td>Page navigation</td>
+                        <td>Form visible</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Auto-generated TR Number</td>
+                        <td>API call</td>
+                        <td>TR-CP2-XXXX assigned</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Approval button clickable</td>
+                        <td>DOM state check</td>
+                        <td>Button enabled</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Approval submits successfully</td>
+                        <td>API response</td>
+                        <td>HTTP 200/201</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Status "Bot Reviewed"</td>
+                        <td>API call</td>
+                        <td>Status updated</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 15px; padding: 10px 12px; background: #fef3c7; border-radius: 4px; font-size: 12px;">
+                <strong>Total Playwright Checks: ~33 UI + Business Logic Validations</strong>
+            </p>
+        </div>
+
+        <!-- AI VALIDATION PIPELINE -->
+        <div class="section">
+            <div class="section-title">Part 2: AI Validation Pipeline Checks</div>
+
+            <div class="subsection-title">Tier 0: Pre-Flight Checks (T0)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Check Name</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="check-num">1</td>
+                        <td>File Type Validation</td>
+                        <td class="method-cell">Regex: \.(pdf|doc|docx|xls|xlsx|dwg|txt)$</td>
+                        <td>Extension in allowed list</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">2</td>
+                        <td>File Not Empty</td>
+                        <td class="method-cell">Length check: text.length > 0</td>
+                        <td>File has content, ≥ 20 chars</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">3</td>
+                        <td>Filename Validity</td>
+                        <td class="method-cell">Trim/spaces check</td>
+                        <td>No leading/trailing/double spaces</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">4</td>
+                        <td>Special Characters</td>
+                        <td class="method-cell">Regex: [~\/@&%!#$^*()...]</td>
+                        <td>No prohibited characters</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">5</td>
+                        <td>Project Prefix</td>
+                        <td class="method-cell">Regex: ^(C2|CP2|VG)</td>
+                        <td>Starts with C2/CP2/VG</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 10px; padding: 8px 12px; background: #f0f4ff; border-radius: 4px; font-size: 12px;"><strong>T0 Total: 5 checks</strong></p>
+
+            <div class="subsection-title">Tier 1: Metadata Extraction & Validation (T1)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Field</th>
+                        <th>Extraction Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="check-num">1</td>
+                        <td>Contract Number</td>
+                        <td class="method-cell">Multi-pattern regex (3 patterns)</td>
+                        <td>Matches C2 or CP2/VG</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">2</td>
+                        <td>Document Title</td>
+                        <td class="method-cell">Regex: ^(Title|Subject|Document Title)</td>
+                        <td>Length ≥ 5 chars</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">3</td>
+                        <td>Revision Number</td>
+                        <td class="method-cell">Regex: ^(Revision|Rev\.?)</td>
+                        <td>Not draft marker</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">4</td>
+                        <td>Issue Purpose</td>
+                        <td class="method-cell">Enum lookup</td>
+                        <td>IFU, IFI, IFC, IFR, IFT, etc.</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">5</td>
+                        <td>Security Classification</td>
+                        <td class="method-cell">Enum lookup</td>
+                        <td>Company Use, Confidential, Restricted, Public</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">6</td>
+                        <td>Document Type</td>
+                        <td class="method-cell">Enum lookup</td>
+                        <td>SOW, MDR, SDR, DWG, SPE, CAL, etc.</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">7</td>
+                        <td>Discipline Code</td>
+                        <td class="method-cell">Enum lookup</td>
+                        <td>CMS, CIV, CME, ELE, INS, MEC, PIP, etc.</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">8</td>
+                        <td>Originator/Contractor</td>
+                        <td class="method-cell">Regex: (From|Originator|Contractor)</td>
+                        <td>Non-empty, valid org name</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">9</td>
+                        <td>Document Date</td>
+                        <td class="method-cell">Regex: Date pattern</td>
+                        <td>Valid date format</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">10</td>
+                        <td>Supplier Name</td>
+                        <td class="method-cell">Regex: (Supplier|Vendor)</td>
+                        <td>Non-empty, valid name format</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">11</td>
+                        <td>PO Number</td>
+                        <td class="method-cell">Regex: (PO|Purchase Order)</td>
+                        <td>Valid PO format</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">12</td>
+                        <td>Doc Number Matches File Name</td>
+                        <td class="method-cell">String comparison</td>
+                        <td>Exact match after removing extension</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">13</td>
+                        <td>Second Cover Page</td>
+                        <td class="method-cell">Regex: DOCUMENT CONTROL | DC Information</td>
+                        <td>DC block present</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">14</td>
+                        <td>Contract Reference Validation</td>
+                        <td class="method-cell">Regex: ^C2[-\s] | ^(CP2|VG)</td>
+                        <td>Code matches C2 EPC-BOP</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">15</td>
+                        <td>Correct Contract Submission</td>
+                        <td class="method-cell">Regex: CP2 | VG CP2 | Calcasieu | C2</td>
+                        <td>Project = CP2</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 10px; padding: 8px 12px; background: #f0f4ff; border-radius: 4px; font-size: 12px;"><strong>T1 Total: 15 checks</strong></p>
+
+            <div class="subsection-title">Tier 2: Document Quality Checks (T2)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Check Name</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="check-num">1</td>
+                        <td>OCR / Text Searchability</td>
+                        <td>Text extraction</td>
+                        <td>Readable text, ≥ 10 words</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">2</td>
+                        <td>Blank Page Detection</td>
+                        <td>Word density analysis</td>
+                        <td>Low blank page ratio</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">3</td>
+                        <td>Page Orientation</td>
+                        <td>Character encoding analysis</td>
+                        <td>&lt; 10% non-ASCII characters</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">4</td>
+                        <td>Language Compliance</td>
+                        <td>Keyword frequency analysis</td>
+                        <td>Primary language is English</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">5</td>
+                        <td>English Translation Present</td>
+                        <td class="method-cell">Regex: english\s+translation</td>
+                        <td>Translation or English primary</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">6</td>
+                        <td>No Draft Watermarks</td>
+                        <td class="method-cell">Regex: DRAFT|FOR REVIEW|PRELIMINARY</td>
+                        <td>No draft markers present</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">7</td>
+                        <td>No Markup Annotations</td>
+                        <td class="method-cell">Regex: \[COMMENT\]|\[MARKUP\]|<annotation</td>
+                        <td>No markups found</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">8</td>
+                        <td>Proper Document Structure</td>
+                        <td class="method-cell">Regex: ^[0-9]+\.\s+[A-Z]</td>
+                        <td>Numbered sections detected</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">9</td>
+                        <td>Metadata on Each Page</td>
+                        <td class="method-cell">Regex: Company Use|Confidential|VGL</td>
+                        <td>Footer/header info found</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">10</td>
+                        <td>Clean Document End</td>
+                        <td class="method-cell">Regex: END OF DOCUMENT|={5,}$</td>
+                        <td>Document ends cleanly</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">11</td>
+                        <td>Complete Revision Info</td>
+                        <td class="method-cell">Regex: REVISION HISTORY|Rev History</td>
+                        <td>Revision history present</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">12</td>
+                        <td>Management Sign-offs</td>
+                        <td class="method-cell">Regex: Prepared by|Reviewed by|Approved by</td>
+                        <td>Sign-off block present</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 10px; padding: 8px 12px; background: #f0f4ff; border-radius: 4px; font-size: 12px;"><strong>T2 Total: 12 checks</strong></p>
+
+            <div class="subsection-title">Tier 2S: Submittal Checks (T2S)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Check Name</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="check-num">1</td>
+                        <td>Prior Revision Exists</td>
+                        <td>API lookup: checkPriorRevisionExists()</td>
+                        <td>Prior version found or first issue</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">2</td>
+                        <td>Prior Rev Not Under Review</td>
+                        <td>API check: !revisionUnderReview</td>
+                        <td>Prior revision not locked</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">3</td>
+                        <td>Revision History Complete</td>
+                        <td class="method-cell">Regex: Rev [A-Z0-9] - date</td>
+                        <td>History chain present</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">4</td>
+                        <td>Same Discipline in Batch</td>
+                        <td>Set comparison: Set(disciplines).size === 1</td>
+                        <td>All docs same discipline</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">5</td>
+                        <td>Same Issue Purpose in Batch</td>
+                        <td>Set comparison: Set(purposes).size ≤ 2</td>
+                        <td>All docs same purpose (except superseding)</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">6</td>
+                        <td>Package Completeness</td>
+                        <td>Count check: docCount === expectedCount</td>
+                        <td>All required docs present</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 10px; padding: 8px 12px; background: #f0f4ff; border-radius: 4px; font-size: 12px;"><strong>T2S Total: 6 checks</strong></p>
+
+            <div class="subsection-title">Tier 3: Transmittal Builder & Validation (T3 + T3V)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Check Name</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="check-num">1</td>
+                        <td>TRN Format Valid</td>
+                        <td class="method-cell">Regex: ^TR-CP2-\d{6}$</td>
+                        <td>Format matches TR-CP2-XXXXXX</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">2</td>
+                        <td>From Organization Valid</td>
+                        <td>Enum check</td>
+                        <td>Matches known contractors</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">3</td>
+                        <td>To Organization Valid</td>
+                        <td>Enum check</td>
+                        <td>Matches VGL (Venture Global)</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">4</td>
+                        <td>Document Type in TRN</td>
+                        <td>String check</td>
+                        <td>Document type matches transmittal</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">5</td>
+                        <td>Discipline in TRN</td>
+                        <td>Enum check</td>
+                        <td>Discipline valid</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">6</td>
+                        <td>Security Classification in TRN</td>
+                        <td>Enum check</td>
+                        <td>Matches valid classes</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">7</td>
+                        <td>Revision in TRN</td>
+                        <td>String check</td>
+                        <td>Non-empty revision</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">8</td>
+                        <td>Issue Purpose in TRN</td>
+                        <td>Enum check</td>
+                        <td>Matches VALID_ISSUE_PURPOSES</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">9</td>
+                        <td>All Required Fields Populated</td>
+                        <td>Null check</td>
+                        <td>No null/empty required fields</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 10px; padding: 8px 12px; background: #f0f4ff; border-radius: 4px; font-size: 12px;"><strong>T3/T3V Total: 9 checks</strong></p>
+
+            <div class="subsection-title">Tier 4: Decision Engine</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Calculation</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pre-Flight Score</td>
+                        <td>(Pass / Total) × 100</td>
+                        <td>% pass</td>
+                    </tr>
+                    <tr>
+                        <td>Metadata Score</td>
+                        <td>(Pass / Total) × 100</td>
+                        <td>% pass</td>
+                    </tr>
+                    <tr>
+                        <td>Quality Score</td>
+                        <td>(Pass / Total) × 100</td>
+                        <td>% pass</td>
+                    </tr>
+                    <tr>
+                        <td>Submittal Score</td>
+                        <td>(Pass / Total) × 100</td>
+                        <td>% pass</td>
+                    </tr>
+                    <tr>
+                        <td>Transmittal Score</td>
+                        <td>(Pass / Total) × 100</td>
+                        <td>% pass</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Overall Score</strong></td>
+                        <td><strong>(Total Pass / Total Checks) × 100</strong></td>
+                        <td><strong>0–100%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="background: #fee2e2; margin-top: 12px;">
+                <thead>
+                    <tr style="background: #991b1b; color: white;">
+                        <th colspan="2">Decision Logic</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold;">IF totalFail &gt; 0:</td>
+                        <td class="fail">Decision = REJECT</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">ELSE IF totalWarn &gt; 3:</td>
+                        <td style="color: #d97706; font-weight: 600;">Decision = REVIEW</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">ELSE:</td>
+                        <td class="pass">Decision = ACCEPT</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 10px; padding: 8px 12px; background: #f0f4ff; border-radius: 4px; font-size: 12px;"><strong>T4 Total: 1 decision (based on 5 tiers)</strong></p>
+
+            <div class="subsection-title">Tier 5: Final Gate Checks (T5)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Check Name</th>
+                        <th>Method</th>
+                        <th>Pass Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="check-num">1</td>
+                        <td>All Stages Complete</td>
+                        <td>Status check</td>
+                        <td>All prior tiers finished</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">2</td>
+                        <td>Compliance Score Acceptable</td>
+                        <td>Threshold: score ≥ 80</td>
+                        <td>Score in acceptable range</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">3</td>
+                        <td>Transmittal Ready for SDx</td>
+                        <td>Validation check</td>
+                        <td>All TRN fields valid</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">4</td>
+                        <td>Audit Trail Complete</td>
+                        <td>Log check</td>
+                        <td>All decisions recorded</td>
+                    </tr>
+                    <tr>
+                        <td class="check-num">5</td>
+                        <td>No Blocking Issues</td>
+                        <td>Array check</td>
+                        <td>No showstopper errors</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 10px; padding: 8px 12px; background: #f0f4ff; border-radius: 4px; font-size: 12px;"><strong>T5 Total: 5 checks</strong></p>
+        </div>
+
+        <!-- COVERAGE MATRIX -->
+        <div class="section">
+            <div class="section-title">Part 3: Coverage Comparison Matrix</div>
+
+            <div class="subsection-title">PreFlight & Metadata (File & Document Level)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th style="text-align: center;">Playwright Bot</th>
+                        <th style="text-align: center;">AI Validation</th>
+                        <th>Coverage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>File extension validation</td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-100">100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>File size check</td>
+                        <td style="text-align: center;"><span class="cross">✗</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-ai">AI only</span></td>
+                    </tr>
+                    <tr>
+                        <td>Filename validity</td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-100">100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>Document number extraction</td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-100">100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>Revision extraction</td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-100">100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>Title extraction</td>
+                        <td style="text-align: center;"><span class="cross">✗</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-ai">AI only</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="subsection-title">Content Quality (OCR, Structure)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th style="text-align: center;">Playwright Bot</th>
+                        <th style="text-align: center;">AI Validation</th>
+                        <th>Coverage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Text searchability (OCR)</td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-100">100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>Blank page detection</td>
+                        <td style="text-align: center;"><span class="cross">✗</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-ai">AI only</span></td>
+                    </tr>
+                    <tr>
+                        <td>No markups/annotations</td>
+                        <td style="text-align: center;"><span class="cross">✗</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-ai">AI only</span></td>
+                    </tr>
+                    <tr>
+                        <td>Document structure</td>
+                        <td style="text-align: center;"><span class="cross">✗</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-ai">AI only</span></td>
+                    </tr>
+                    <tr>
+                        <td>Language validation</td>
+                        <td style="text-align: center;"><span class="cross">✗</span></td>
+                        <td style="text-align: center;"><span class="checkmark">✓</span></td>
+                        <td><span class="coverage-ai">AI only</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SUMMARY TABLE -->
+        <div class="section">
+            <div class="section-title">Summary: Total Check Counts</div>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>System</th>
+                        <th>Tier 0–2</th>
+                        <th>Tier 2S</th>
+                        <th>Tier 3–4</th>
+                        <th>Tier 5</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Playwright Bot</strong></td>
+                        <td>~10 checks</td>
+                        <td>—</td>
+                        <td>~8 checks</td>
+                        <td>—</td>
+                        <td><strong>~33 checks</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI Validation</strong></td>
+                        <td><strong>5 + 15 + 12 = 32</strong></td>
+                        <td><strong>6</strong></td>
+                        <td><strong>9 + 1</strong></td>
+                        <td><strong>5</strong></td>
+                        <td><strong>~53 checks + scoring</strong></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><strong>Combined Coverage</strong></td>
+                        <td>UI + content analysis</td>
+                        <td>Batch rules</td>
+                        <td>Both</td>
+                        <td>Final gate</td>
+                        <td><strong>100% document lifecycle</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- GUIDELINES -->
+        <div class="section">
+            <div class="section-title">When to Use Each System</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Use Case</th>
+                        <th>Playwright Bot</th>
+                        <th>AI Validation</th>
+                        <th>Both</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Testing SDx workflows</strong></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Simulating user behavior</strong></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>UI state transitions</strong></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Batch processing offline</strong></td>
+                        <td></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fast validation (sec/doc)</strong></td>
+                        <td></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compliance scoring</strong></td>
+                        <td></td>
+                        <td><span class="checkmark">✓</span></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>End-to-end testing</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td><span class="checkmark">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complete audit trail</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td><span class="checkmark">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quality gates before approval</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td><span class="checkmark">✓</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p><strong>VG CP2 Document Control Automation</strong> — Venture Global LNG</p>
+            <p>Created By:Harsha Toshniwal April 13, 2026 | Comprehensive Check Matrix</p>
+            <p style="margin-top: 10px; font-size: 11px; color: #999;">
+                To save as PDF: Print this page (Ctrl+P) → Select "Save as PDF" → Download
+            </p>
+        </div>
+    </div>
+</body>
+</html>
