@@ -1,0 +1,98 @@
+==================================================
+          COMPLIANCE VALIDATION REPORT            
+==================================================
+
+Document Name : VG-CP2-MEC-DWG-0001_RevA.pdf
+System Mode   : azure-gpt-4o
+Final Status  : PASSED
+
+--------------------------------------------------
+VALIDATION STEPS EXECUTED:
+1. UI detail field extraction (Step 4)
+2. Datasheet cross-validation (Step 6)
+3. Document integrity checks (Step 7)
+4. AI OCR metadata extraction (Step 8b Phase 1)
+5. Cross-page consistency analysis (Step 8b Phase 2)
+6. Loadsheet cross-validation (Step 8b Phase 3)
+7. Contract/project reference check (Step 8b Phase 4)
+--------------------------------------------------
+
+SUMMARY:
+The document passed all compliance barriers smoothly.
+Action Taken: Task Approved & Transmittal Generated.
+
+==================================================
+                 END OF REPORT                    
+==================================================
+
+==================================================
+          COMPLIANCE VALIDATION REPORT            
+==================================================
+
+Document Name : VG-000000-INF-SPC-VGL-00003_RevA.pdf
+System Mode   : azure-gpt-4o
+Final Status  : FAILED
+
+--------------------------------------------------
+VALIDATION STEPS EXECUTED:
+1. UI detail field extraction (Step 4)
+2. Datasheet cross-validation (Step 6)
+3. Document integrity checks (Step 7)
+4. AI OCR metadata extraction (Step 8b Phase 1)
+5. Cross-page consistency analysis (Step 8b Phase 2)
+6. Loadsheet cross-validation (Step 8b Phase 3)
+7. Contract/project reference check (Step 8b Phase 4)
+--------------------------------------------------
+
+SUMMARY OF ISSUES / DISCREPANCIES:
+
+  [!] Other errors:
+      - Discipline Match: Mismatch — Document: "INF" vs Loadsheet: "Instrumentation"
+
+  Action Taken: Task Declined.
+
+==================================================
+                 END OF REPORT                    
+==================================================
+
+==================================================
+          COMPLIANCE VALIDATION REPORT            
+==================================================
+
+Document Name : VG-CP2-PIP-DWG-0112_RevA.pdf
+System Mode   : azure-gpt-4o
+Final Status  : FAILED
+
+--------------------------------------------------
+VALIDATION STEPS EXECUTED:
+1. UI detail field extraction (Step 4)
+2. Datasheet cross-validation (Step 6)
+3. Document integrity checks (Step 7)
+4. AI OCR metadata extraction (Step 8b Phase 1)
+5. Cross-page consistency analysis (Step 8b Phase 2)
+6. Loadsheet cross-validation (Step 8b Phase 3)
+7. Contract/project reference check (Step 8b Phase 4)
+--------------------------------------------------
+
+SUMMARY OF ISSUES / DISCREPANCIES:
+
+  [!] Other errors:
+      - OCR / Text Searchability: Image-only page(s) detected: 3 — no OCR text layer (per-page chars: [392, 74, 0])
+      - Document Metadata on Each Page: Metadata may not appear on all pages
+      - Security Classification Present: Security classification missing or invalid
+      - Revision History Complete: Revision history missing
+      - Document Structure: Sections: No | Signatures: No | Rev History: No
+      - File Completeness: No end marker — file may be truncated
+      - Second Cover Page: Second cover page not detected
+      - Document Number Match: Mismatch — Document: "VG-CP1-PIP-DWG-9999" vs Loadsheet: "VG-CP2-PIP-DWG-0112"
+      - Security Classification Present: Security classification not found in document — required field
+      - Issue Purpose Present: Issue purpose not found in document — required field
+      - Transmittal Field Readiness: Missing fields for transmittal: issuePurpose, securityClassification
+      - Missing: issuePurpose: "issuePurpose" could not be extracted from document — transmittal will be incomplete
+      - Missing: securityClassification: "securityClassification" could not be extracted from document — transmittal will be incomplete
+
+  Action Taken: Task Declined.
+
+==================================================
+                 END OF REPORT                    
+==================================================

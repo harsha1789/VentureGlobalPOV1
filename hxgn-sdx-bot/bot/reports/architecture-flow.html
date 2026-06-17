@@ -6,21 +6,22 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; display: flex; justify-content: center; padding: 20px; }
-  .page { width: 820px; }
+  .page { width: 880px; }
 
   .hdr { background: linear-gradient(135deg, #003b5c, #005f8a); color: #fff; padding: 14px 24px; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; align-items: center; }
   .hdr h1 { font-size: 16px; }
-  .hdr span { font-size: 9px; opacity: 0.5; }
+  .hdr span { font-size: 9px; opacity: 0.7; }
 
   .bd { background: #fff; border-radius: 0 0 10px 10px; padding: 18px 24px 14px; box-shadow: 0 3px 14px rgba(0,0,0,0.05); }
 
   .row { display: flex; align-items: center; justify-content: center; }
-  .node { display: flex; flex-direction: column; align-items: center; width: 90px; text-align: center; }
+  .node { display: flex; flex-direction: column; align-items: center; width: 95px; text-align: center; }
   .node .d { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: #fff; }
   .node .t { font-size: 8.5px; color: #333; font-weight: 600; line-height: 1.25; margin-top: 4px; }
   .node .s { font-size: 7px; color: #999; margin-top: 1px; line-height: 1.2; }
+  .node .lib { font-size: 7px; color: #1565c0; margin-top: 3px; font-weight: 600; line-height: 1.25; font-family: 'Consolas', monospace; }
 
-  .a { display: flex; align-items: center; margin-top: -10px; }
+  .a { display: flex; align-items: center; margin-top: -18px; }
   .a-l { width: 12px; height: 1.5px; background: #ccd; }
   .a-t { border-top: 3px solid transparent; border-bottom: 3px solid transparent; border-left: 4px solid #ccd; }
 
@@ -28,7 +29,9 @@
   .va-l { width: 1.5px; height: 16px; background: #ccd; position: relative; }
   .va-l::after { content:''; position: absolute; bottom: -4px; left: -3px; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; border-top: 4px solid #ccd; }
 
-  .ph { font-size: 7.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin: 10px 0 5px 2px; }
+  .ph { display: flex; align-items: baseline; gap: 10px; margin: 10px 0 5px 2px; }
+  .ph-t { font-size: 7.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #999; }
+  .ph-s { font-size: 7.5px; color: #1565c0; font-weight: 600; font-family: 'Consolas', monospace; }
 
   .cb { background: #1565c0; }
   .cg { background: #2e7d32; }
@@ -39,76 +42,95 @@
 
   /* Decision */
   .dec { display: flex; justify-content: center; gap: 14px; margin: 8px 0; }
-  .db { border-radius: 6px; padding: 5px 14px; text-align: center; font-size: 9px; font-weight: 700; }
+  .db { border-radius: 6px; padding: 6px 14px; text-align: center; font-size: 9px; font-weight: 700; line-height: 1.4; }
+  .db .lib { font-size: 7px; font-weight: 600; font-family: 'Consolas', monospace; display: block; margin-top: 2px; opacity: 0.85; }
   .dp { background: #e8f5e9; color: #2e7d32; border: 1.5px solid #2e7d32; }
   .df { background: #ffebee; color: #c62828; border: 1.5px solid #c62828; }
 
-  .footer { text-align: center; font-size: 7px; color: #ccc; margin-top: 10px; }
+  .stack { background: #f7f9fc; border: 1px solid #e3e8ef; border-radius: 6px; padding: 8px 12px; margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+  .stack .lbl { font-size: 7.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555; }
+  .stack .chip { font-size: 8px; color: #1565c0; font-weight: 600; font-family: 'Consolas', monospace; background: #fff; border: 1px solid #dce3ec; border-radius: 10px; padding: 2px 8px; }
+
+  .footer { text-align: center; font-size: 7px; color: #bbb; margin-top: 10px; }
 </style>
 </head>
 <body>
 <div class="page">
   <div class="hdr">
     <h1>Automation Architecture Flow</h1>
-    <span>VG CP2 LNG &bull; HxGN SDx &bull; Bot + AI OCR</span>
+    <span>Bot + AI OCR Pipeline</span>
   </div>
   <div class="bd">
 
-    <div class="ph">Polling</div>
+    <div class="stack">
+      <span class="lbl">Runtime &amp; Core</span>
+      <span class="chip">Node.js</span>
+      <span class="chip">Playwright</span>
+      <span class="chip">dotenv</span>
+      <span class="chip">dayjs</span>
+      <span class="chip">pdf-lib</span>
+      <span class="chip">pdf-parse</span>
+      <span class="chip">pdfkit</span>
+      <span class="chip">Azure OpenAI</span>
+      <span class="chip">@google/generative-ai</span>
+      <span class="chip">openai</span>
+    </div>
+
+    <div class="ph"><span class="ph-t">Polling</span><span class="ph-s">Playwright &middot; Node.js &middot; dayjs</span></div>
     <div class="row">
-      <div class="node"><div class="d co">1</div><div class="t">Polling Job</div><div class="s">Monitor To Do List</div></div>
+      <div class="node"><div class="d co">1</div><div class="t">Polling Job</div><div class="s">Monitor To Do List</div><div class="lib">setInterval + dayjs</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d co">2</div><div class="t">Detect "Review Submittal"</div></div>
+      <div class="node"><div class="d co">2</div><div class="t">Detect "Review Submittal"</div><div class="lib">Playwright locators</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d cb">3</div><div class="t">Login &amp; Claim</div><div class="s">dc_bot</div></div>
+      <div class="node"><div class="d cb">3</div><div class="t">Login &amp; Claim</div><div class="s">dc_bot</div><div class="lib">Playwright + dotenv</div></div>
     </div>
 
     <div class="va"><div class="va-l"></div></div>
 
-    <div class="ph">Validation</div>
+    <div class="ph"><span class="ph-t">Validation</span><span class="ph-s">Playwright &middot; pdf-parse &middot; dayjs</span></div>
     <div class="row">
-      <div class="node"><div class="d cg">4</div><div class="t">Validate Detail Fields</div><div class="s">Doc No, Rev, Date</div></div>
+      <div class="node"><div class="d cg">4</div><div class="t">Validate Detail Fields</div><div class="s">Doc No, Rev, Date</div><div class="lib">Playwright DOM + dayjs</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d cg">5</div><div class="t">Validate Datasheet</div><div class="s">Loadsheet Match</div></div>
+      <div class="node"><div class="d cg">5</div><div class="t">Validate Datasheet</div><div class="s">Loadsheet Match</div><div class="lib">Playwright locators</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d cp">6</div><div class="t">Document Integrity</div><div class="s">22 Quality Checks</div></div>
+      <div class="node"><div class="d cp">6</div><div class="t">Document Integrity</div><div class="s">22 Quality Checks</div><div class="lib">pdf-parse + pdf-lib</div></div>
     </div>
 
     <div class="va"><div class="va-l"></div></div>
 
-    <div class="ph">AI OCR</div>
+    <div class="ph"><span class="ph-t">AI OCR</span><span class="ph-s">Azure OpenAI &middot; Google Gemini &middot; OpenAI &middot; pdf-lib</span></div>
     <div class="row">
-      <div class="node"><div class="d cr">7</div><div class="t">Metadata Extraction</div><div class="s">14 Fields via OCR</div></div>
+      <div class="node"><div class="d cr">7</div><div class="t">Metadata Extraction</div><div class="s">14 Fields via OCR</div><div class="lib">Azure OpenAI<br>GPT-4o Vision</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d cr">8</div><div class="t">Cross-Page Consistency</div><div class="s">Rev, Date, Title</div></div>
+      <div class="node"><div class="d cr">8</div><div class="t">Cross-Page Consistency</div><div class="s">Rev, Date, Title</div><div class="lib">@google/generative-ai<br>Gemini 2.0</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d cr">9</div><div class="t">Loadsheet Validation</div><div class="s">OCR vs Datasheet</div></div>
+      <div class="node"><div class="d cr">9</div><div class="t">Loadsheet Validation</div><div class="s">OCR vs Datasheet</div><div class="lib">openai GPT-4o<br>pdf-lib render</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d cr">10</div><div class="t">Contract Check</div><div class="s">Project &amp; Rev/AFC</div></div>
+      <div class="node"><div class="d cr">10</div><div class="t">Contract Check</div><div class="s">Project &amp; Rev/AFC</div><div class="lib">Azure OpenAI + regex rules</div></div>
     </div>
 
     <div class="va"><div class="va-l"></div></div>
 
-    <div class="ph">Transmittal</div>
+    <div class="ph"><span class="ph-t">Transmittal</span><span class="ph-s">Playwright &middot; dotenv</span></div>
     <div class="row">
-      <div class="node"><div class="d co">11</div><div class="t">Create Transmittal</div></div>
+      <div class="node"><div class="d co">11</div><div class="t">Create Transmittal</div><div class="lib">Playwright form fill</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d co">12</div><div class="t">Generate Transmittal</div></div>
+      <div class="node"><div class="d co">12</div><div class="t">Generate Transmittal</div><div class="lib">Playwright workflow</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d ct">13</div><div class="t">Approve Submittal</div><div class="s">Rev Updated</div></div>
+      <div class="node"><div class="d ct">13</div><div class="t">Approve Submittal</div><div class="s">Rev Updated</div><div class="lib">Playwright + dayjs</div></div>
       <div class="a"><div class="a-l"></div><div class="a-t"></div></div>
-      <div class="node"><div class="d ct">14</div><div class="t">Complete Transmittal</div></div>
+      <div class="node"><div class="d ct">14</div><div class="t">Complete Transmittal</div><div class="lib">Playwright + dotenv</div></div>
     </div>
 
     <div class="va"><div class="va-l"></div></div>
 
-    <div class="ph">Output</div>
+    <div class="ph"><span class="ph-t">Output</span><span class="ph-s">pdfkit &middot; HTML/CSS &middot; Node fs</span></div>
     <div class="dec">
-      <div class="db dp">Bot Reviewed + HTML Report</div>
-      <div class="db df">Bot Rejected + Error Report PDF</div>
+      <div class="db dp">Bot Reviewed + HTML Report<span class="lib">Node fs &middot; HTML/CSS</span></div>
+      <div class="db df">Bot Rejected + Error Report PDF<span class="lib">pdfkit &middot; pdf-lib</span></div>
     </div>
 
-    <div class="footer">VG CP2 LNG &bull; HxGN SDx &bull; Document Control Automation</div>
+    <div class="footer">Document Control Automation</div>
   </div>
 </div>
 </body>

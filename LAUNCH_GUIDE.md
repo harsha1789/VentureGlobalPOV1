@@ -40,6 +40,7 @@ http://localhost:3000
 | Field    | Value         |
 |----------|---------------|
 | Username | `dc_bot`      |
+
 | Password | `BotPass2026!`|
 
 You will see the **To Do List** with 15 submittals in the Hexagon SDx-style interface.

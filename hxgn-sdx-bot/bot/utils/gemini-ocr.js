@@ -12,11 +12,21 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
+const dayjs = require('dayjs');
+const customParseFormat = require('dayjs/plugin/customParseFormat');
+const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
+
+dayjs.extend(customParseFormat);
+
+const GEMINI_GENERATION_CONFIG = { responseMimeType: 'application/json' };
 
 class VGLOCREngine {
   constructor(apiKey) {
     this.genAI = new GoogleGenerativeAI(apiKey);
-    this.model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    this.model = this.genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash',
+      generationConfig: GEMINI_GENERATION_CONFIG
+    });
   }
 
   async extractMetadata(pdfPath) {
@@ -116,7 +126,8 @@ Return ONLY valid JSON:
     return this._parseJSON(result);
   }
 
-  async _callWithRetry(contents, maxRetries = 5) {
+  async _callWithRetry(contents, maxRetries = 3) {
+    const backoff = [20, 35, 50];
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
         const result = await this.model.generateContent(contents);
@@ -125,7 +136,7 @@ Return ONLY valid JSON:
       } catch (err) {
         const msg = (err.message || '') + (err.status || '');
         if (msg.includes('429') || msg.includes('RESOURCE_EXHAUSTED') || msg.includes('rate') || msg.includes('quota')) {
-          const waitSec = 20 + (attempt * 15);
+          const waitSec = backoff[attempt] ?? 50;
           console.log(`    [OCR] Rate limit hit. Waiting ${waitSec}s... (Attempt ${attempt + 1}/${maxRetries})`);
           await new Promise(r => setTimeout(r, waitSec * 1000));
           continue;
@@ -149,6 +160,204 @@ Return ONLY valid JSON:
       if (match) return JSON.parse(match[0]);
       throw new Error(`Failed to parse AI response: ${e.message}`);
     }
+  }
+}
+
+function _normalize(v) {
+  return String(v == null ? '' : v).replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
+function _datesEqual(a, b) {
+  const formats = [
+    undefined,
+    'D MMM YYYY', 'DD MMM YYYY',
+    'D MMMM YYYY', 'DD MMMM YYYY',
+    'DD/MM/YYYY', 'D/M/YYYY',
+    'MM/DD/YYYY', 'M/D/YYYY',
+    'YYYY-MM-DD', 'DD-MM-YYYY'
+  ];
+  for (const fmtA of formats) {
+    for (const fmtB of formats) {
+      const da = fmtA ? dayjs(a, fmtA, true) : dayjs(a);
+      const db = fmtB ? dayjs(b, fmtB, true) : dayjs(b);
+      if (da.isValid() && db.isValid() && da.isSame(db, 'day')) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Filter out false-positive OCR issues ported from VGL_OCR validation_helpers.py.
+ * Removes issues where:
+ *   - found equals expected after whitespace/case normalization
+ *   - both values resolve to the same date, ignoring format differences
+ */
+function filterIssues(issues) {
+  if (!Array.isArray(issues)) return [];
+  return issues.filter(issue => {
+    const found = _normalize(issue.found);
+    const expected = _normalize(issue.expected);
+    if (!found || !expected) return true;
+    if (found === expected) return false;
+    const fieldName = String(issue.field || '').toLowerCase();
+    if (fieldName.includes('date') && _datesEqual(issue.found, issue.expected)) return false;
+    return true;
+  });
+}
+
+/**
+ * Extract per-page text items with bounding-box positions using pdfjs-dist.
+ * Returns: Array<Array<{ str, transform, width, height }>> indexed by page (0-based).
+ */
+async function _extractTextPositions(srcBytes) {
+  try {
+    const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
+    const loadingTask = pdfjs.getDocument({
+      data: new Uint8Array(srcBytes),
+      verbosity: 0,
+      isEvalSupported: false,
+      useSystemFonts: true
+    });
+    const doc = await loadingTask.promise;
+    const perPage = [];
+    for (let i = 1; i <= doc.numPages; i++) {
+      const page = await doc.getPage(i);
+      const content = await page.getTextContent();
+      perPage.push((content.items || []).map(it => ({
+        str: it.str,
+        transform: it.transform,
+        width: it.width,
+        height: it.height || Math.abs(it.transform?.[3]) || 10
+      })));
+    }
+    return perPage;
+  } catch (err) {
+    console.warn(`    [OCR] Text-position extraction failed (${err.message}); will fall back to legend-only highlights`);
+    return [];
+  }
+}
+
+function _normalizeForMatch(s) {
+  return String(s || '').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
+/**
+ * Create a copy of the PDF with red error annotations on pages with failed checks.
+ * Real text-bbox highlights are drawn on matched text via pdfjs-dist positions.
+ * Whole-page markers are drawn for blank/image-only pages.
+ * Returns the output path, or null if no failures or generation fails.
+ * Port of VGL_OCR process_compliance_ai.py → generate_highlighted_pdf().
+ */
+async function generateHighlightedPDF(pdfPath, failedIssues) {
+  if (!failedIssues || failedIssues.length === 0) return null;
+
+  const withPages = failedIssues.filter(i => Number.isFinite(Number(i.page)) && Number(i.page) > 0);
+  if (withPages.length === 0) return null;
+
+  try {
+    const srcBytes = fs.readFileSync(pdfPath);
+    const textPositions = await _extractTextPositions(srcBytes);
+
+    const pdfDoc = await PDFDocument.load(srcBytes);
+    const helv = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const helvBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const pages = pdfDoc.getPages();
+
+    const byPage = new Map();
+    for (const issue of withPages) {
+      const idx = Number(issue.page) - 1;
+      if (idx < 0 || idx >= pages.length) continue;
+      if (!byPage.has(idx)) byPage.set(idx, []);
+      byPage.get(idx).push(issue);
+    }
+
+    const red = rgb(0.85, 0.1, 0.1);
+    const redFill = rgb(1, 0.92, 0.92);
+    const yellowHighlight = rgb(1, 0.92, 0.3);
+
+    for (const [idx, issues] of byPage) {
+      const page = pages[idx];
+      const { width, height } = page.getSize();
+      const items = textPositions[idx] || [];
+
+      // ── Whole-page markers for blank / image-only pages ──
+      const wholePageIssue = issues.find(i => /blank|non_ocr|image_only/i.test(String(i.field || '')));
+      if (wholePageIssue) {
+        page.drawRectangle({
+          x: 4, y: 4, width: width - 8, height: height - 8,
+          borderColor: red, borderWidth: 4, opacity: 1
+        });
+        const stampText = /blank/i.test(wholePageIssue.field) ? 'BLANK PAGE' : 'IMAGE-ONLY PAGE — NO OCR TEXT';
+        const stampW = helvBold.widthOfTextAtSize(stampText, 20) + 24;
+        page.drawRectangle({
+          x: (width - stampW) / 2, y: height / 2 - 20,
+          width: stampW, height: 40,
+          color: redFill, borderColor: red, borderWidth: 2, opacity: 0.9
+        });
+        page.drawText(stampText, {
+          x: (width - stampW) / 2 + 12, y: height / 2 - 6,
+          size: 20, font: helvBold, color: red
+        });
+      }
+
+      // ── Real text-bbox highlights for consistency issues ──
+      const matchedIssues = new Set();
+      for (const issue of issues) {
+        if (wholePageIssue === issue) continue;
+        const needle = _normalizeForMatch(issue.found);
+        if (!needle || needle === 'na') continue;
+
+        const hits = items.filter(it => {
+          const s = _normalizeForMatch(it.str);
+          return s && (s === needle || s.includes(needle) || needle.includes(s));
+        });
+
+        for (const hit of hits) {
+          const [, , , , x, y] = hit.transform;
+          const itemH = Math.max(hit.height, 8);
+          const pad = 1.5;
+          // Yellow highlight fill with red border — standard compliance-tool convention
+          page.drawRectangle({
+            x: x - pad, y: y - pad,
+            width: hit.width + pad * 2, height: itemH + pad * 2,
+            color: yellowHighlight, borderColor: red, borderWidth: 1.2, opacity: 0.55
+          });
+          matchedIssues.add(issue);
+        }
+      }
+
+      // ── Legend box at top of page listing all issues ──
+      const blockH = 22 + issues.length * 34;
+      const blockY = height - blockH - 18;
+      const blockX = 18;
+      const blockW = width - 36;
+
+      page.drawRectangle({ x: blockX, y: blockY, width: blockW, height: blockH, color: redFill, borderColor: red, borderWidth: 1.5, opacity: 0.92 });
+      page.drawText(`ERRORS ON PAGE ${idx + 1}`, { x: blockX + 10, y: blockY + blockH - 16, size: 11, font: helvBold, color: red });
+
+      let cursorY = blockY + blockH - 32;
+      for (const issue of issues) {
+        const marker = matchedIssues.has(issue) ? '[HIGHLIGHTED]' : (issue === wholePageIssue ? '[PAGE-MARK]' : '');
+        const line1 = `ERROR: ${issue.field || 'field'} ${marker}`.trim();
+        const line2 = `Expected: ${String(issue.expected || '').slice(0, 100)}`;
+        const line3 = `Found: ${String(issue.found || '').slice(0, 100)}`;
+        page.drawText(line1, { x: blockX + 10, y: cursorY, size: 9, font: helvBold, color: red });
+        page.drawText(line2, { x: blockX + 10, y: cursorY - 10, size: 8, font: helv, color: red });
+        page.drawText(line3, { x: blockX + 10, y: cursorY - 20, size: 8, font: helv, color: red });
+        cursorY -= 34;
+      }
+    }
+
+    const dir = path.dirname(pdfPath);
+    const base = path.basename(pdfPath, path.extname(pdfPath));
+    const outPath = path.join(dir, `${base}_errors.pdf`);
+    const outBytes = await pdfDoc.save();
+    fs.writeFileSync(outPath, outBytes);
+    console.log(`    [OCR] Highlighted error PDF generated: ${path.basename(outPath)}`);
+    return outPath;
+  } catch (err) {
+    console.warn(`    [OCR] Failed to generate highlighted PDF: ${err.message}`);
+    return null;
   }
 }
 
@@ -229,12 +438,25 @@ async function runOCRValidation(pdfPath, datasheet, submittal) {
   });
   if (!analysis.has_security_classification) isValid = false;
 
-  if (analysis.issues && analysis.issues.length > 0) {
-    analysis.issues.forEach(issue => {
+  const rawIssues = Array.isArray(analysis.issues) ? analysis.issues : [];
+  const filteredIssues = filterIssues(rawIssues);
+  analysis.issues = filteredIssues;
+  analysis.raw_issues = rawIssues;
+  const suppressedCount = rawIssues.length - filteredIssues.length;
+  if (suppressedCount > 0) {
+    console.log(`    [OCR] False-positive filter suppressed ${suppressedCount} issue(s)`);
+  }
+
+  if (filteredIssues.length > 0) {
+    filteredIssues.forEach(issue => {
       checks.push({
         name: `Consistency: ${issue.field} (Page ${issue.page})`,
         status: 'FAIL',
-        note: `Expected "${issue.expected}", found "${issue.found}"`
+        note: `Expected "${issue.expected}", found "${issue.found}"`,
+        page: Number(issue.page) || null,
+        field: issue.field,
+        expected: issue.expected,
+        found: issue.found
       });
       isValid = false;
     });
@@ -323,7 +545,21 @@ async function runOCRValidation(pdfPath, datasheet, submittal) {
     }
   }
 
-  return { checks, extracted: refData, analysis, isValid };
+  const failedIssuesForPdf = checks
+    .filter(c => c.status === 'FAIL' && c.page)
+    .map(c => ({ page: c.page, field: c.field, expected: c.expected, found: c.found }));
+
+  // Whole-page markers: blank pages, image-only pages from the analysis
+  for (const p of (analysis.blank_pages || [])) {
+    failedIssuesForPdf.push({ page: Number(p), field: 'blank_page', expected: 'page content', found: 'BLANK PAGE' });
+  }
+  for (const p of (analysis.non_ocr_pages || [])) {
+    failedIssuesForPdf.push({ page: Number(p), field: 'non_ocr_page', expected: 'OCR text', found: 'IMAGE-ONLY PAGE' });
+  }
+
+  const highlightedPdfPath = await generateHighlightedPDF(pdfPath, failedIssuesForPdf);
+
+  return { checks, extracted: refData, analysis, isValid, highlightedPdfPath };
 }
 
-module.exports = { VGLOCREngine, runOCRValidation };
+module.exports = { VGLOCREngine, runOCRValidation, filterIssues, generateHighlightedPDF };

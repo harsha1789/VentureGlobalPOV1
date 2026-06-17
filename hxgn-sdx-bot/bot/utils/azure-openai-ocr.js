@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const { PDFParse } = require('pdf-parse');
 const { AzureOpenAI } = require('openai');
+const { filterIssues, generateHighlightedPDF } = require('./gemini-ocr');
 
 class AzureOCREngine {
   constructor() {
@@ -133,7 +134,8 @@ ${text.slice(0, 30000)}
     return parsed;
   }
 
-  async _callWithRetry(messages, maxRetries = 4) {
+  async _callWithRetry(messages, maxRetries = 3) {
+    const backoff = [20, 35, 50];
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
         const resp = await this.client.chat.completions.create({
@@ -147,7 +149,7 @@ ${text.slice(0, 30000)}
         const status = err.status || err.statusCode || 0;
         const msg = (err.message || '') + ' ' + status;
         if (status === 429 || /rate|quota|throttle/i.test(msg)) {
-          const wait = 15 + attempt * 15;
+          const wait = backoff[attempt] ?? 50;
           console.log(`    [OCR] Azure rate limit — waiting ${wait}s (attempt ${attempt + 1}/${maxRetries})`);
           await new Promise(r => setTimeout(r, wait * 1000));
           continue;
@@ -240,12 +242,25 @@ async function runOCRValidation(pdfPath, datasheet, submittal) {
   });
   if (!analysis.has_security_classification) isValid = false;
 
-  if (analysis.issues && analysis.issues.length > 0) {
-    analysis.issues.forEach(issue => {
+  const rawIssues = Array.isArray(analysis.issues) ? analysis.issues : [];
+  const filteredIssues = filterIssues(rawIssues);
+  analysis.issues = filteredIssues;
+  analysis.raw_issues = rawIssues;
+  const suppressedCount = rawIssues.length - filteredIssues.length;
+  if (suppressedCount > 0) {
+    console.log(`    [OCR] False-positive filter suppressed ${suppressedCount} issue(s)`);
+  }
+
+  if (filteredIssues.length > 0) {
+    filteredIssues.forEach(issue => {
       checks.push({
         name: `Consistency: ${issue.field} (Page ${issue.page})`,
         status: 'FAIL',
-        note: `Expected "${issue.expected}", found "${issue.found}"`
+        note: `Expected "${issue.expected}", found "${issue.found}"`,
+        page: Number(issue.page) || null,
+        field: issue.field,
+        expected: issue.expected,
+        found: issue.found
       });
       isValid = false;
     });
@@ -327,7 +342,20 @@ async function runOCRValidation(pdfPath, datasheet, submittal) {
     }
   }
 
-  return { checks, extracted: refData, analysis, isValid };
+  const failedIssuesForPdf = checks
+    .filter(c => c.status === 'FAIL' && c.page)
+    .map(c => ({ page: c.page, field: c.field, expected: c.expected, found: c.found }));
+
+  for (const p of (analysis.blank_pages || [])) {
+    failedIssuesForPdf.push({ page: Number(p), field: 'blank_page', expected: 'page content', found: 'BLANK PAGE' });
+  }
+  for (const p of (analysis.non_ocr_pages || [])) {
+    failedIssuesForPdf.push({ page: Number(p), field: 'non_ocr_page', expected: 'OCR text', found: 'IMAGE-ONLY PAGE' });
+  }
+
+  const highlightedPdfPath = await generateHighlightedPDF(pdfPath, failedIssuesForPdf);
+
+  return { checks, extracted: refData, analysis, isValid, highlightedPdfPath };
 }
 
 module.exports = { AzureOCREngine, runOCRValidation };

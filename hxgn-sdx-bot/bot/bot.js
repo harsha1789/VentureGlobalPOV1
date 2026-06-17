@@ -13,7 +13,7 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 const { Logger } = require('./utils/logger');
-const { generateReport, saveReport } = require('./utils/reporter');
+const { generateReport, saveReport, writeValidationSummary } = require('./utils/reporter');
 
 // Step modules
 const step01 = require('./steps/step01-login');
@@ -219,9 +219,14 @@ async function main() {
           label: c.name,
           pass: c.status === 'PASS',
           detail: c.note,
-          section: c.name.includes('Loadsheet') ? 'Loadsheet' : 'Quality'
+          section: c.name.startsWith('Native Metadata')
+            ? 'Native PDF Metadata'
+            : (c.name.includes('Loadsheet') ? 'Loadsheet' : 'Quality')
         }));
         docResults.documentChecks = (docResults.documentChecks || []).concat(ocrChecks);
+      }
+      if (ctx.highlightedPdfPath) {
+        docResults.highlightedPdfPath = ctx.highlightedPdfPath;
       }
       await page.screenshot({ path: path.join(screenshotsDir, `${screenshotPrefix}-validation.png`), fullPage: true });
       if (validationResult.status === 'FAIL') {
@@ -241,7 +246,15 @@ async function main() {
       docResults.steps.push(botRevResult);
       await page.screenshot({ path: path.join(screenshotsDir, `${screenshotPrefix}-final.png`), fullPage: true });
 
-      console.log(`\n  ✓ ${docLabel} ${docNum} — PASSED all checks`);
+      // If any step returned FAIL without throwing (e.g., non-fatal step 7), still
+      // mark the document outcome as FAIL while preserving the artifacts collected.
+      if (docResults.steps.some(s => s && s.status === 'FAIL')) {
+        docResults.outcome = 'FAIL';
+        const failing = docResults.steps.filter(s => s && s.status === 'FAIL').map(s => s.notes).join('; ');
+        console.log(`\n  ✗ ${docLabel} ${docNum} — FAILED (non-fatal step failures): ${failing}`);
+      } else {
+        console.log(`\n  ✓ ${docLabel} ${docNum} — PASSED all checks`);
+      }
 
     } catch (err) {
       console.error(`\n  ✗ ${docLabel} ${docNum} — FAILED: ${err.message}`);
@@ -324,12 +337,18 @@ async function main() {
     ${errorDetails.documentChecks.length > 0 ? `
     <div class="section">
       <h3>Document Quality Checks Performed</h3>
-      ${errorDetails.documentChecks.map(check => `
-        <div class="check-item check-${check.status.toLowerCase()}">
-          <div class="check-name">${check.name}: ${check.status}</div>
-          <div class="check-note">${check.note}</div>
-        </div>
-      `).join('')}
+      ${errorDetails.documentChecks.map(check => {
+        const label = check.label || check.name || 'check';
+        const isPass = check.pass === true || check.status === 'PASS';
+        const cls = isPass ? 'pass' : 'fail';
+        const statusText = isPass ? 'PASS' : 'FAIL';
+        const note = check.detail || check.note || '';
+        return `
+        <div class="check-item check-${cls}">
+          <div class="check-name">${label}: ${statusText}</div>
+          <div class="check-note">${note}</div>
+        </div>`;
+      }).join('')}
     </div>
     ` : ''}
 
@@ -470,6 +489,14 @@ async function main() {
   });
   const reportPath = saveReport(html, reportsDir);
   console.log(`Report saved: ${reportPath}`);
+
+  // Plain-text validation summary (port of VGL_OCR generate_text_report)
+  const provider = (process.env.AI_PROVIDER || 'gemini').toLowerCase();
+  const systemMode = provider === 'azure'
+    ? `azure-${process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4o'}`
+    : 'gemini-2.5-flash';
+  const summaryPath = writeValidationSummary(reportsDir, allDocResults, systemMode);
+  console.log(`Validation summary: ${summaryPath}`);
 
   // Save log
   logger.save(path.join(reportsDir, 'last-run-log.json'));

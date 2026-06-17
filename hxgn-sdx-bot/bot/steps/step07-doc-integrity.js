@@ -108,7 +108,9 @@ module.exports = async function step07DocIntegrity(page, env, logger, ctx) {
   if (failures.length > 0) {
     const failSummary = failures.map(f => `${f.label}: FAIL (${f.detail})`).join('; ');
     logger.fail(step, `Document checks FAILED — ${failures.length} issue(s): ${failSummary}`);
-    throw new Error(`Document checks failed: ${failSummary}`);
+    // Non-fatal: let subsequent steps (transmittal, OCR) still run so their artifacts
+    // (native metadata, OCR checks, highlighted PDF) reach the final report.
+    return { status: 'FAIL', notes: `Document checks failed: ${failSummary}` };
   }
 
   logger.pass(step, `Document integrity — all ${totalChecks} checks PASS`);

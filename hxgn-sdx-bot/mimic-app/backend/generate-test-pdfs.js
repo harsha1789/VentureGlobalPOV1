@@ -567,6 +567,99 @@ async function createDoc5_MultiFailure() {
   });
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// 6. VALID INSTRUMENTATION SPEC — VG-000000-INF-SPC-VGL-00003 (all checks PASS)
+// ══════════════════════════════════════════════════════════════════════════
+async function createDoc6_InstrumentationSpec() {
+  await writePdf('VG-000000-INF-SPC-VGL-00003_RevA.pdf', (doc) => {
+    // ── Page 1: Cover ──
+    addCoverHeader(doc, 'CONTRACT DOCUMENT');
+    addRuntimeStamp(doc);
+    doc.moveDown(0.5);
+    addMetadataTable(doc, [
+      ['CONTRACT NUMBER',        'VG-000000-INF-SPC-VGL-00003'],
+      ['DOCUMENT TITLE',         'Instrumentation Design Basis Specification'],
+      ['REVISION NUMBER',        'Rev A'],
+      ['ISSUE PURPOSE',          'IFR — Issued for Review'],
+      ['SECURITY CLASSIFICATION','Company Use'],
+      ['DOCUMENT TYPE',          'SPC — Specification'],
+      ['DISCIPLINE CODE',        'INF — Instrumentation'],
+      ['DOCUMENT DATE',          RUNTIME_DATE_LONG],
+      ['FROM ORGANISATION',      'VGL — Venture Global LNG'],
+      ['TO ORGANISATION',        'PRJ — Project Owner'],
+      ['PROJECT',                'Engineering Project — C2 EPC-BOP'],
+    ]);
+    doc.moveDown(0.5);
+    drawEngineeringDiagram(doc, 'INSTRUMENTATION DESIGN BASIS — C2 EPC-BOP');
+    addFooter(doc, 'VG-000000-INF-SPC-VGL-00003', 'A', 'Company Use');
+
+    // ── Page 2: Second Cover ──
+    doc.addPage();
+    addCoverHeader(doc, 'DOCUMENT CONTROL INFORMATION');
+    doc.moveDown(0.5);
+    doc.fontSize(12).fillColor('#003b5c').text('SECOND COVER PAGE — DOCUMENT CONTROL INFORMATION');
+    doc.moveDown(0.5);
+    doc.fontSize(10).fillColor('#333');
+    doc.text('SDx Project Area:           C2');
+    doc.text('Contract Reference:         C2 EPC-BOP');
+    doc.text('Transmittal Reference:      TRN-C2-VGL-2026-0003');
+    doc.text('Previous Revision:          — (First Issue)');
+    doc.text('Page Count:                 4 pages');
+    doc.text('Language:                   English');
+    doc.text('File Name:                  VG-000000-INF-SPC-VGL-00003_RevA.pdf');
+    doc.moveDown(1);
+    doc.font('Helvetica-Bold').text('APPROVAL SIGNATURES');
+    doc.font('Helvetica').moveDown(0.3);
+    doc.text(`Prepared by:    S. Jones                 Date: ${RUNTIME_DATE_SHORT}`);
+    doc.text(`Reviewed by:    R. Patel                 Date: ${RUNTIME_DATE_SHORT}`);
+    doc.text(`Approved by:    M. Brennan               Date: ${RUNTIME_DATE_SHORT}`);
+    doc.moveDown(1);
+    doc.fontSize(12).fillColor('#003b5c').text('REVISION HISTORY');
+    doc.moveDown(0.5);
+    doc.fontSize(9).fillColor('#333').font('Courier');
+    doc.text('Rev    Date           Description                         Author');
+    doc.text('───    ──────────     ───────────────────────────────     ──────────');
+    doc.text(`A      ${RUNTIME_DATE_SHORT}    First Issue — Issued for Review     S. Jones`);
+    doc.font('Helvetica');
+    addFooter(doc, 'VG-000000-INF-SPC-VGL-00003', 'A', 'Company Use');
+
+    // ── Page 3: Technical Content ──
+    doc.addPage();
+    doc.fontSize(14).fillColor('#003b5c').text('1. SCOPE');
+    doc.moveDown(0.5);
+    doc.fontSize(10).fillColor('#333');
+    doc.text('This specification defines the instrumentation design basis applicable to all process units within the C2 EPC-BOP scope of the Engineering Project facility. All instrumentation and control systems shall be designed, procured, and installed in accordance with this document.');
+    doc.moveDown(0.8);
+    doc.fontSize(14).fillColor('#003b5c').text('2. REFERENCES');
+    doc.moveDown(0.5);
+    doc.fontSize(10).fillColor('#333');
+    doc.text('  • ISA 5.1 — Instrumentation Symbols and Identification');
+    doc.text('  • IEC 61511 — Functional Safety, Safety Instrumented Systems');
+    doc.text('  • IEC 61508 — Functional Safety of E/E/PE Systems');
+    doc.text('  • Project Specification VGL-INF-STD-001');
+    doc.text('  • Process Hazard Analysis Report VGL-HSE-HAZ-0001');
+    doc.moveDown(0.8);
+    doc.fontSize(14).fillColor('#003b5c').text('3. DESIGN BASIS');
+    doc.moveDown(0.5);
+    doc.fontSize(10).fillColor('#333');
+    doc.text('All SIL-rated loops shall be designed and verified per IEC 61511. Safety Integrity Level targets per the SIL determination study. DCS shall be Emerson DeltaV. SIS shall be Triconex Tricon CX. Field instrumentation to be NAMUR compliant.');
+    doc.moveDown(0.8);
+    doc.fontSize(14).fillColor('#003b5c').text('4. ACCEPTANCE CRITERIA');
+    doc.moveDown(0.5);
+    doc.fontSize(10).fillColor('#333');
+    doc.text('Loop accuracy: ±0.5% of span for process measurements. Control valve seat leakage: Class IV per ANSI/FCI 70-2. Pressure transmitters: HART 7 protocol, 4-20mA output.');
+    addFooter(doc, 'VG-000000-INF-SPC-VGL-00003', 'A', 'Company Use');
+
+    // ── Page 4: End ──
+    doc.addPage();
+    doc.moveDown(10);
+    doc.fontSize(16).fillColor('#003b5c').text('═══════════════════════════════════', { align: 'center' });
+    doc.text('END OF DOCUMENT', { align: 'center' });
+    doc.text('═══════════════════════════════════', { align: 'center' });
+    addFooter(doc, 'VG-000000-INF-SPC-VGL-00003', 'A', 'Company Use');
+  });
+}
+
 // ── MAIN ────────────────────────────────────────────────────────────────
 async function main() {
   console.log('═══════════════════════════════════════════════════════');
@@ -578,6 +671,7 @@ async function main() {
   await createDoc3_ImageOnly();
   await createDoc4_WithMarkups();
   await createDoc5_MultiFailure();
+  await createDoc6_InstrumentationSpec();
 
   const files = fs.readdirSync(OUT_DIR);
   console.log(`\n  Done — ${files.length} PDFs generated in ${OUT_DIR}`);
